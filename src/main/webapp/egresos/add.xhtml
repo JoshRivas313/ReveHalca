@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="title">
+       Crear Egresos
+    </ui:define>
+
+
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+        
+            <p:panel styleClass="box-primary card">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="Guardar" action="#{egresoBean.create}" update="@form"
+                                     icon="fa fa-check" styleClass="btn-primary"/>
+                    <p:spacer width="5"/>
+
+                    <p:commandButton value="Volver" immediate="true"
+                                     action="/egresos/index?faces-redirect=true"
+                                     process="@this"
+                                     icon="fa fa-reply"/>
+                </div>
+
+
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+                   
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Tipo de Egreso" for="inptNompe"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptNompe" value="#{egresoBean.egreso.tipoEgreso}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptNompe" /> 
+                            </span>
+                        </div>
+                    </div> 
+                    
+                     <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="desce" value="Descripcion"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="desce" value="#{egresoBean.egreso.descripcion}"    required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="desce" /> 
+                            </span> 
+                        </div>
+                    </div> 
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="mont" value="Monto de egreso"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="mont" value="#{egresoBean.egreso.montoEgreso}"    required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="mont" /> 
+                            </span> 
+                        </div>
+                    </div>
+     
+                </div>
+
+
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
+                <p:commandButton value="Yes" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                 icon="fa fa-check"/>
+                <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                 icon="fa fa-close"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

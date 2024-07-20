@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="title">
+        Editar  Cliente
+    </ui:define>
+
+
+
+    <ui:define name="body">
+        <h:form id="editform" prependId="false">
+
+            <p:panel styleClass="box-primary card">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="Actualizar" action="#{clienteBean.update}" update="@form" icon="fa fa-check" styleClass="btn-primary" />
+
+
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Volver" immediate="true"
+                                     action="/clientes/index?faces-redirect=true"
+                                     process="@this"
+                                     icon="fa fa-reply"/>
+                </div>
+
+
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+
+                    <p:inputText id="txtid" value="#{clienteBean.cliente.id}"  style="display: none"/>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Nombre de cliente" for="nomCli"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="nomCli" value="#{clienteBean.cliente.nombreCliente}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="nomCli" /> 
+                            </span>
+                        </div>
+                    </div> 
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Apellido de cliente" for="apeCli"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="apeCli" value="#{clienteBean.cliente.apellidoCliente}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="apeCli" /> 
+                            </span>
+                        </div>
+                    </div> 
+
+                </div>
+
+
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
+                <p:commandButton value="Yes" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                 icon="fa fa-check"/>
+                <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                 icon="fa fa-close"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>
+

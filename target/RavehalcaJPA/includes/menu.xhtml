@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ul class="sidebar-menu tree" data-widget="tree">
+        <li>
+            <p:link outcome="/index" onclick="clearBreadCrumbs()">
+                <i class="fa fa-home"></i>
+                <span>Inicio</span>
+            </p:link>
+            
+            <p:link outcome="/index" onclick="clearBreadCrumbs()">
+                <i class="fa fa-user-circle-o"></i>
+                <span>Mi Perfil</span>
+            </p:link>
+            
+        </li>
+
+        <li class="header">
+            RAVEHALCA
+        </li>
+        <li>
+
+            <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Administrador'}">
+                <p:link outcome="/mesas/index">
+                    <i class="fa fa-object-group"></i>
+                    <span>Mesas</span>
+                </p:link>
+                <p:link outcome="/clientes/index">
+                    <i class="fa fa-child"></i>
+                    <span>Clientes</span>
+                </p:link>
+                <p:link outcome="/egresos/index">
+                    <i class="fa fa-money"></i>
+                    <span>Egresos</span>
+                </p:link>
+
+                <p:link outcome="/producto/index">
+                    <i class="fa fa-tags"></i>
+                    <span>Productos</span>
+                </p:link>
+                
+                <p:link outcome="/usuario/index">
+                    <i class="fa fa-users"></i>
+                    <span>Usuarios</span>
+                </p:link>
+                
+                <p:link outcome="/perfilusuario/index">
+                    <i class="fa fa-id-card"></i>
+                    <span>Perfil de Usuarios</span>
+                </p:link>
+            </c:if>
+
+            <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Mozo'}">
+                <p:link outcome="/mesas/index">
+                    <i class="fa fa-object-group"></i>
+                    <span>Mesas</span>
+                </p:link>
+            </c:if>
+
+            <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Cajero'}">
+                <p:link outcome="/clientes/index">
+                    <i class="fa fa-child"></i>
+                    <span>Clientes</span>
+                </p:link>
+            </c:if>
+
+            <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Gerente'}">
+                <p:link outcome="/egresos/index">
+                    <i class="fa fa-money"></i>
+                    <span>Egresos</span>
+                </p:link>
+            </c:if>
+        </li>
+
+    </ul>
+
+</ui:composition>

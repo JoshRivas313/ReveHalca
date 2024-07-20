@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="#{layoutMB.template}">
+
+    <ui:param name="renderBreadCrumb" value="false"/>
+
+    <ui:define name="title">
+        <h2 class="align-center">
+            BIENVENIDO
+            <br/>
+            <small> PLANTILLA RAVEHALCA </small>
+        </h2>
+
+        <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Administrador'}">
+            <h3>PLANTILLA BASE  PARA EL ADMINISTRADOR DE LA COCHERA</h3>
+            <!-- Contenido específico para Admin -->
+        </c:if>
+
+        <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Mozo'}">
+            <h3>PLANTILLA BASE  PARA EL MOZO DE LA COCHERA</h3>
+            <!-- Contenido específico para Mozo -->
+        </c:if>
+
+        <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Cajero'}">
+            <h3>PLANTILLA BASE  PARA EL CAJERO DE LA COCHERA</h3>
+            <!-- Contenido específico para Cajero -->
+        </c:if>
+
+        <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Gerente'}">
+            <h3>PLANTILLA BASE  PARA EL GERENTE DE LA COCHERA</h3>
+            <!-- Contenido específico para Gerente -->
+        </c:if>
+
+    </ui:define>
+
+
+
+</ui:composition>

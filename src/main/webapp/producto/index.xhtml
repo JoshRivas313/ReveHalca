@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Producto listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Gestion de Productos
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton action="#{productoBean.newProducto}" icon="fa fa-plus"
+                                         value="Nuevo" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                     </div>
+
+                    <p:separator/>
+                    <p:dataTable widgetVar="productoTable" var="prod" value="#{productoBean.getAll()}" rows="4"
+                                 rowKey="#{prod.id}" lazy="true" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
+                                 rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+
+                        <p:column headerText="ID" >
+                            #{prod.id}
+                        </p:column>
+
+                        <p:column headerText="Nombre" >
+                            #{prod.nombre}
+                        </p:column>
+                        
+                        <p:column headerText="Categoria" >
+                           #{prod.idcat.productCategory}
+                        </p:column>
+                        
+                        <p:column headerText="Estado" >
+                            #{prod.estado}
+                        </p:column>
+                        
+                        <p:column headerText="Precio" >
+                            #{prod.precio}
+                        </p:column>
+
+                        <p:column headerText="Operación">
+                            <h:form>
+                                <p:commandButton icon="pi pi-pencil" action="#{productoBean.editProducto}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                    <f:setPropertyActionListener value="#{prod.id}"  target="#{productoBean.producto.id}" />
+                                </p:commandButton>
+
+                                <p:commandButton action="#{productoBean.delete}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
+                                    <f:setPropertyActionListener value="#{prod.id}" target="#{productoBean.producto.id}" />
+                                </p:commandButton>
+                            </h:form>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </h:form>
+
+
+
+
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+

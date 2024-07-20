@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="title">
+        Añadir Productos
+    </ui:define>
+
+
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+
+            <p:panel styleClass="box-primary card">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="Guardar" action="#{productoBean.create}" update="@form"
+                                     icon="fa fa-check" styleClass="btn-primary"/>
+                    <p:spacer width="5"/>
+
+                    <p:commandButton value="Volver" immediate="true"
+                                     action="/producto/index?faces-redirect=true"
+                                     process="@this"
+                                     icon="fa fa-reply"/>
+                </div>
+
+
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Nombre" for="inptNomP"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptNomP" value="#{productoBean.producto.nombre}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptNomP" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Id Categoria Producto" for="inptCatP"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:selectOneMenu id="inptCatP" value="#{productoBean.producto.idcat.id}" required="true">
+                                <f:selectItem itemLabel="Seleccione una categoría" itemValue="" />
+                                <f:selectItems value="#{productoBean.categorias}" var="categoria"
+                                               itemLabel="#{categoria.productCategory}" itemValue="#{categoria.id}"/>
+                            </p:selectOneMenu>
+                            <span class="help-block"> 
+                                <p:message for="inptCatP" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Estado" for="inptEstP"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:selectOneMenu id="inptEstP" value="#{productoBean.producto.estado}" required="true">
+                                <f:selectItems value="#{productoBean.estados}" var="estad"
+                                               itemLabel="#{estad}" itemValue="#{estad}"/>
+                            </p:selectOneMenu>
+                            <span class="help-block"> 
+                                <p:message for="inptEstP" /> 
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Precio" for="inptPrecP"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptPrecP" value="#{productoBean.producto.precio}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptPrecP" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
+                <p:commandButton value="Yes" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                 icon="fa fa-check"/>
+                <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                 icon="fa fa-close"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

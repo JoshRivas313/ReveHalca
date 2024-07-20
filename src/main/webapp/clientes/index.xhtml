@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Clientes listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Gestion de Clientes
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                <p:separator/>
+                    <p:dataTable widgetVar="productoTable" var="c" value="#{clienteBean.getAll()}" rows="4"
+                                 rowKey="#{c.id}" lazy="true" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
+                                 rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+
+                        <p:column headerText="DNI" >
+                            #{c.id}
+                        </p:column>
+
+                        <p:column headerText="Nombre" >
+                            #{c.nombreCliente}
+                        </p:column>
+                        
+                        <p:column headerText="Apellido" >
+                            #{c.apellidoCliente}
+                        </p:column>
+
+                        <p:column headerText="Operación">
+                            <h:form>
+                                <p:commandButton icon="pi pi-pencil" action="#{clienteBean.editCliente}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                    <f:setPropertyActionListener value="#{c.id}"  target="#{clienteBean.cliente.id}" />
+                                </p:commandButton>
+
+                            </h:form>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </h:form>
+
+
+
+
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
