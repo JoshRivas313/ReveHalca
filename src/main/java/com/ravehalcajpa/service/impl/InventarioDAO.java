@@ -8,7 +8,6 @@ import com.ravehalcajpa.connection.conexion;
 import com.ravehalcajpa.model.Inventario;
 import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.service.EstadoProducto;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
