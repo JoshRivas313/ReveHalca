@@ -13,6 +13,7 @@
         <class>com.ravehalcajpa.model.Usuario</class>
         <class>com.ravehalcajpa.model.PerfilUsuario</class>        
         <class>com.ravehalcajpa.model.TipoUsuario</class>
+        <class>com.ravehalcajpa.model.Inventario</class>
 
 
 
