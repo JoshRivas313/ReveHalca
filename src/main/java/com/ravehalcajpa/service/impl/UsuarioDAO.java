@@ -30,8 +30,11 @@ public class UsuarioDAO extends conexion implements DAOuser<Usuario> {
             st.setString(3, u.getPassword());
             st.setInt(4, u.getTipoUsuario().getId());
             st.setString(5, u.getEstado().name());
+            
 
             st.executeUpdate();
+            
+            
         } catch (Exception ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

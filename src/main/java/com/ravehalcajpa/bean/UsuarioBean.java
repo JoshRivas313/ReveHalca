@@ -2,6 +2,7 @@ package com.ravehalcajpa.bean;
 
 import com.ravehalcajpa.model.TipoUsuario;
 import com.ravehalcajpa.model.Usuario;
+import com.ravehalcajpa.service.Email;
 import com.ravehalcajpa.service.EstadoUser;
 import com.ravehalcajpa.service.impl.TipoUsuarioDAO;
 import com.ravehalcajpa.service.impl.UsuarioDAO;
@@ -23,6 +24,7 @@ public class UsuarioBean implements Serializable {
     private UsuarioDAO dao;
     private Usuario usuario = new Usuario();
     private List<Usuario> tipousu;
+    private Email em = new Email();
     @Inject
     private TipoUsuarioDAO tipodao;
     private List<TipoUsuario> tipos;
@@ -65,15 +67,7 @@ public class UsuarioBean implements Serializable {
     public String editUsuario() throws Exception {
         int id = this.usuario.getId();
         this.usuario = dao.getById(id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
+        
         return "edit";
     }
 
@@ -88,6 +82,7 @@ public class UsuarioBean implements Serializable {
 
     public String create() throws Exception {
         dao.create(usuario);
+        em.enviaruser(usuario);
         return "/usuario/index.xhtml?faces-redirect=true";
     }
 
