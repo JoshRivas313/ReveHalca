@@ -40,8 +40,6 @@ public class PerfilUsuario implements Serializable {
         this.direccion = direccion;
         this.usuario = usuario;
     }
-    
-    
 
     public long getId() {
         return id;
@@ -107,11 +105,21 @@ public class PerfilUsuario implements Serializable {
         this.usuario = usuario;
     }
 
-    
-
     @Override
     public String toString() {
         return "perfilusuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ",nacionalidad=" + nacionalidad + ",distrito=" + distrito + ",direccion=" + direccion + ",usuario=" + usuario + '}';
+    }
+
+    public String toStringForReport() {
+        return "PerfilUsuario{"
+                + "id=" + id
+                + ", nombre='" + nombre + '\''
+                + ", apellido='" + apellido + '\''
+                + ", dni=" + dni
+                + ", nacionalidad='" + nacionalidad + '\''
+                + ", distrito='" + distrito + '\''
+                + ", direccion='" + direccion + '\''
+                + '}';
     }
 
 }

@@ -93,6 +93,34 @@ public class PerfilUsuarioDAO extends conexion implements DAOedit<PerfilUsuario>
         return null;
     }
 
+     @Transactional
+    public List<PerfilUsuario> getFilteredAttributes() throws SQLException, Exception {
+        String sql = "SELECT id, nombre, apellido, dni, nacionalidad, distrito, direccion FROM perfilusuario";
+        List<PerfilUsuario> lista = new ArrayList<>();
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                PerfilUsuario p = new PerfilUsuario();
+                p.setId(rs.getLong("id"));
+                p.setNombre(rs.getString("nombre"));
+                p.setApellido(rs.getString("apellido"));
+                p.setDni(rs.getInt("dni"));
+                p.setNacionalidad(rs.getString("nacionalidad"));
+                p.setDistrito(rs.getString("distrito"));
+                p.setDireccion(rs.getString("direccion"));
+                lista.add(p);
+            }
+
+            return lista;
+        } finally {
+            cerrar();
+        }
+    }
+    
+    
     @Override
     public PerfilUsuario update(PerfilUsuario entity) {
         return null;
