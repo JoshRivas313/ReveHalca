@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="title">
+        Añadir Pedido
+    </ui:define>
+
+
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+
+            <p:panel styleClass="box-primary card">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="Guardar" action="#{pedidoBean.create()}" update="@form"
+                                     icon="fa fa-check" styleClass="btn-primary"/>
+                    <p:spacer width="5"/>
+
+                    <p:commandButton value="Volver" immediate="true"
+                                     action="/producto/index?faces-redirect=true"
+                                     process="@this"
+                                     icon="fa fa-reply"/>
+                </div>
+
+
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Estado" for="inptEstPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:selectOneMenu id="inptEstPed" value="#{pedidoBean.pedido.estado}" required="true">
+                                <f:selectItems value="#{pedidoBean.estados}" var="estad"
+                                               itemLabel="#{estad}" itemValue="#{estad}"/>
+                            </p:selectOneMenu>
+                            <span class="help-block"> 
+                                <p:message for="inptEstPed" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Hora" for="inptHoraPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptHoraPed" value="#{pedidoBean.pedido.hora}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptHoraPed" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Fecha" for="inptFechaPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptFechaPed" value="#{pedidoBean.pedido.fecha}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptFechaPed" /> 
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-11">
+                        <p:outputLabel value="Usuario" for="inptUsuarioPed"/>
+                        <p:selectOneMenu id="inptUsuarioPed" value="#{pedidoBean.pedido.usuario.id}" required="true">
+                            <f:selectItem itemLabel="Seleccione un usuario" itemValue="" />
+                            <f:selectItems value="#{usuarioBean.usuario}" var="usuario"
+                                           itemLabel="#{usuario.username}" itemValue="#{usuario.id}"/>
+                        </p:selectOneMenu>
+                        <span class="help-block"> 
+                            <p:message for="inptUsuarioPed" /> 
+                        </span>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Número de Mesa" for="inptMesaPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:selectOneMenu id="inptMesaPed" value="#{pedidoBean.pedido.mesa.id}" required="true">
+                                <f:selectItem itemLabel="Seleccione una mesa" itemValue="" />
+                                <f:selectItems value="#{mesaBean.mesa}" var="num"
+                                               itemLabel="#{num.id}" itemValue="#{num.id}"/>
+                            </p:selectOneMenu>
+                            <span class="help-block"> 
+                                <p:message for="inptMesaPed" /> 
+                            </span>
+                        </div>
+                    </div>
+                    
+                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Detalle" for="inptDetPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptDetPed" value="#{pedidoBean.pedido.detalles}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptDetPed" /> 
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
+                <p:commandButton value="Yes" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                 icon="fa fa-check"/>
+                <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                 icon="fa fa-close"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

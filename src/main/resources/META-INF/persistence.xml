@@ -14,6 +14,8 @@
         <class>com.ravehalcajpa.model.PerfilUsuario</class>        
         <class>com.ravehalcajpa.model.TipoUsuario</class>
         <class>com.ravehalcajpa.model.Inventario</class>
+        <class>com.ravehalcajpa.model.Pedido</class>
+        <class>com.ravehalcajpa.model.DetallePedido</class>
 
 
 

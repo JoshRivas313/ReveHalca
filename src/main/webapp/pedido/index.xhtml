@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Producto listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Gestion de Pedidos
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton action="#{pedidoBean.newPedido()}" icon="fa fa-plus"
+                                         value="Nuevo" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                    </div>
+
+                    <p:separator/>
+                    <p:dataTable widgetVar="productoTable" var="ped" value="#{pedidoBean.getAll()}" rows="8"
+                                 rowKey="#{ped.id}" lazy="true" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
+                                 rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+
+                        <p:column headerText="ID" >
+                            #{ped.id}
+                        </p:column>
+
+                        <p:column headerText="Estado" >
+                            #{ped.estado}
+                        </p:column>
+
+                        <p:column headerText="Hora" >
+                            #{ped.hora}
+                        </p:column>
+
+                        <p:column headerText="Fecha" >
+                            #{ped.fecha}
+                        </p:column>
+
+                        <p:column headerText="Nombre del Mozo" >
+                            #{ped.usuario.username}
+                        </p:column>
+
+                        <p:column headerText="N° de Mesa" >
+                            #{ped.mesa.id}
+                        </p:column>
+                        
+                        <p:column headerText="Detalles" >
+                            <h:dataTable value="#{ped.detalles}" var="detalle">
+                                <p:column>
+                                    <f:facet name="header">Producto</f:facet>
+                                    #{detalle.nombreProducto}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Precio</f:facet>
+                                    #{detalle.precioProducto}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Cantidad</f:facet>
+                                    #{detalle.cantidad}
+                                </p:column>
+                            </h:dataTable>
+                        </p:column>
+                        
+
+                        <p:column headerText="Operación">
+                            <h:form>
+                                <p:commandButton icon="pi pi-pencil" action="#{pedidoBean.update()}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                    <f:setPropertyActionListener value="#{ped.id}"  target="#{pedidoBean.pedido.id}" />
+                                </p:commandButton>
+
+                                <p:commandButton action="#{pedidoBean.delete()}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
+                                    <f:setPropertyActionListener value="#{prod.id}" target="#{pedidoBean.pedido.id}" />
+                                </p:commandButton>
+                            </h:form>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </h:form>
+
+
+
+
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+

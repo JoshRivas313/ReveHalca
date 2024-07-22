@@ -56,6 +56,11 @@
                     <i class="fa fa-id-card"></i>
                     <span>Perfil de Usuarios</span>
                 </p:link>
+                
+                <p:link outcome="/pedido/index">
+                    <i class= "fa fa-bell"></i>
+                    <span>Pedidos</span>
+                </p:link>
             </c:if>
 
             <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Mozo'}">
