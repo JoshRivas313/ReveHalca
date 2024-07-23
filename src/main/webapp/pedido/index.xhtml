@@ -81,12 +81,12 @@
 
                         <p:column headerText="Operación">
                             <h:form>
-                                <p:commandButton icon="pi pi-pencil" action="#{pedidoBean.update()}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <p:commandButton icon="pi pi-pencil" action="#{pedidoBean.editPedido()}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
                                     <f:setPropertyActionListener value="#{ped.id}"  target="#{pedidoBean.pedido.id}" />
                                 </p:commandButton>
 
                                 <p:commandButton action="#{pedidoBean.delete()}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
-                                    <f:setPropertyActionListener value="#{prod.id}" target="#{pedidoBean.pedido.id}" />
+                                    <f:setPropertyActionListener value="#{ped.id}" target="#{pedidoBean.pedido.id}" />
                                 </p:commandButton>
                             </h:form>
 

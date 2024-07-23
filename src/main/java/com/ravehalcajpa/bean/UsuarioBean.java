@@ -7,6 +7,7 @@ import com.ravehalcajpa.service.EstadoUser;
 import com.ravehalcajpa.service.impl.TipoUsuarioDAO;
 import com.ravehalcajpa.service.impl.UsuarioDAO;
 import jakarta.annotation.ManagedBean;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -34,6 +35,12 @@ public class UsuarioBean implements Serializable {
         usuario.setTipoUsuario(new TipoUsuario());
     }
 
+    @PostConstruct
+    public void init() {
+        getMozo(); 
+    }
+
+    
     public UsuarioDAO getDao() {
         return dao;
     }
@@ -108,5 +115,27 @@ public class UsuarioBean implements Serializable {
     //obtener estados xdd
     public List<EstadoUser> getEstados() {
         return Arrays.asList(EstadoUser.values());
+    }
+    
+    public void getMozo() {
+        System.out.println("Llamada a getMozo");
+        tipousu = dao.getAllMozo();
+        if (tipousu != null) {
+            System.out.println("Usuarios cargados: " + tipousu.size());
+            for (Usuario u : tipousu) {
+                System.out.println("Usuario ID: " + u.getId() + ", Username: " + u.getUsername());
+            }
+        } else {
+            System.out.println("No se encontraron usuarios.");
+        }
+    }
+
+    private List<Usuario> allUsuarios;
+
+    public List<Usuario> getAllUsuarios() throws Exception {
+        if (allUsuarios == null) {
+            allUsuarios = dao.getAll();
+        }
+        return allUsuarios;
     }
 }

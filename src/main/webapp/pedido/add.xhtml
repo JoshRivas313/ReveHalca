@@ -20,7 +20,7 @@
                     <p:spacer width="5"/>
 
                     <p:commandButton value="Volver" immediate="true"
-                                     action="/producto/index?faces-redirect=true"
+                                     action="/pedido/index?faces-redirect=true"
                                      process="@this"
                                      icon="fa fa-reply"/>
                 </div>
@@ -45,40 +45,48 @@
                         </div>
                     </div>
 
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
                         <div class="ui-sm-12 ui-g-11">
                             <p:outputLabel value="Hora" for="inptHoraPed"/>
                         </div>
-                        <div class="ui-sm-12 ui-g-11" >
-                            <p:inputText id="inptHoraPed" value="#{pedidoBean.pedido.hora}" required="true"/>
-                            <span class="help-block"> 
-                                <p:message for="inptHoraPed" /> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:calendar id="inptHoraPed" value="#{pedidoBean.pedido.hora}" required="true"
+                                        timeOnly="true" pattern="HH:mm" showOn="button" navigator="true" 
+                                        showButtonPanel="true" />
+                            <span class="help-block">
+                                <p:message for="inptHoraPed" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Fecha" for="inptFechaPed"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:calendar id="inptFechaPed" value="#{pedidoBean.pedido.fecha}" required="true"
+                                        pattern="dd/MM/yyyy" navigator="true" showButtonPanel="true"/>
+                            <span class="help-block">
+                                <p:message for="inptFechaPed" />
                             </span>
                         </div>
                     </div>
 
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
                         <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Fecha" for="inptFechaPed"/>
+                            <p:outputLabel value="Nombre del Mozo" for="inptUsuarioPed"/>
                         </div>
-                        <div class="ui-sm-12 ui-g-11" >
-                            <p:inputText id="inptFechaPed" value="#{pedidoBean.pedido.fecha}" required="true"/>
-                            <span class="help-block"> 
-                                <p:message for="inptFechaPed" /> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:selectOneMenu id="inptUsuarioPed" value="#{pedidoBean.pedido.usuario.id}" required="true">
+                                <f:selectItem itemLabel="Seleccione un usuario" itemValue="" />
+                                <f:selectItems value="#{usuarioBean.tipousu}" var="user"
+                                               itemLabel="#{user.username}" itemValue="#{user.id}" />
+                            </p:selectOneMenu>
+
+                            <span class="help-block">
+                                <p:message for="inptUsuarioPed" />
                             </span>
                         </div>
-                    </div>
-
-                    <div class="ui-sm-12 ui-g-11">
-                        <p:outputLabel value="Usuario" for="inptUsuarioPed"/>
-                        <p:selectOneMenu id="inptUsuarioPed" value="#{pedidoBean.pedido.usuario.id}" required="true">
-                            <f:selectItem itemLabel="Seleccione un usuario" itemValue="" />
-                            <f:selectItems value="#{usuarioBean.usuario}" var="usuario"
-                                           itemLabel="#{usuario.username}" itemValue="#{usuario.id}"/>
-                        </p:selectOneMenu>
-                        <span class="help-block"> 
-                            <p:message for="inptUsuarioPed" /> 
-                        </span>
                     </div>
 
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
@@ -88,26 +96,17 @@
                         <div class="ui-sm-12 ui-g-11">
                             <p:selectOneMenu id="inptMesaPed" value="#{pedidoBean.pedido.mesa.id}" required="true">
                                 <f:selectItem itemLabel="Seleccione una mesa" itemValue="" />
-                                <f:selectItems value="#{mesaBean.mesa}" var="num"
-                                               itemLabel="#{num.id}" itemValue="#{num.id}"/>
+                                <f:selectItems value="#{mesaBean.numesa}" var="mes"
+                                               itemLabel="#{mes.id}" itemValue="#{mes.id}"/>
                             </p:selectOneMenu>
                             <span class="help-block"> 
                                 <p:message for="inptMesaPed" /> 
                             </span>
                         </div>
                     </div>
-                    
-                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Detalle" for="inptDetPed"/>
-                        </div>
-                        <div class="ui-sm-12 ui-g-11" >
-                            <p:inputText id="inptDetPed" value="#{pedidoBean.pedido.detalles}" required="true"/>
-                            <span class="help-block"> 
-                                <p:message for="inptDetPed" /> 
-                            </span>
-                        </div>
-                    </div>
+
+
+
                 </div>
             </p:panel>
 

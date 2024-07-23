@@ -103,12 +103,12 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
                 pedido.setMesa(mesa);
 
                 // Cargar detalles del pedido
-            DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
-            List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(id);
-            pedido.setDetalles(detalles);
+                DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
+                List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(id);
+                pedido.setDetalles(detalles);
 
-            System.out.println("Pedido recuperado: " + pedido);
-            System.out.println("Detalles del pedido: " + detalles);
+                System.out.println("Pedido recuperado: " + pedido);
+                System.out.println("Detalles del pedido: " + detalles);
 
                 return pedido;
             }
@@ -175,7 +175,27 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
 
     @Override
     public boolean delete(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "UPDATE pedido SET estado = 'Cancelado' WHERE id = ?";
+        try {
+            try {
+                conectar();
+            } catch (Exception ex) {
+                Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            st.setLong(1, id);
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, "Error al cancelar el pedido", ex);
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, "Error al cerrar la conexión", ex);
+            }
+        }
+        return false;
     }
 
 }

@@ -1,11 +1,17 @@
 package com.ravehalcajpa.bean;
 
 import com.ravehalcajpa.model.DetallePedido;
+import com.ravehalcajpa.model.Mesa;
 import com.ravehalcajpa.model.Pedido;
+import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.EstadoPedido;
 import com.ravehalcajpa.service.impl.DetallePedidoDAO;
+import com.ravehalcajpa.service.impl.MesaDAO;
 import com.ravehalcajpa.service.impl.PedidoDAO;
+import com.ravehalcajpa.service.impl.ProductoDAO;
+import com.ravehalcajpa.service.impl.UsuarioDAO;
 import jakarta.annotation.ManagedBean;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -28,8 +34,63 @@ public class PedidoBean implements Serializable {
     private List<Pedido> tipope;
 
     @Inject
-    private DetallePedidoDAO tipodao;
-    private List<DetallePedido> tipos;
+    private UsuarioDAO tipodao;
+    private List<Usuario> tipos;
+
+    @Inject
+    private MesaDAO mesadao;
+    private List<Mesa> tmesa;
+
+    private List<DetallePedido> detallesPedido = new ArrayList<>();
+    @Inject
+    private ProductoDAO productoDAO;
+
+    @PostConstruct
+    public void init() {
+        if (pedido == null) {
+            pedido = new Pedido();
+        }
+        if (pedido.getUsuario() == null) {
+            pedido.setUsuario(new Usuario());
+        }
+        if (pedido.getMesa() == null) {
+            pedido.setMesa(new Mesa());
+        }
+        detallesPedido.add(new DetallePedido());
+
+    }
+
+    public List<DetallePedido> getDetallesPedido() {
+        return detallesPedido;
+    }
+
+    public void setDetallesPedido(List<DetallePedido> detallesPedido) {
+        this.detallesPedido = detallesPedido;
+    }
+
+    public ProductoDAO getProductoDAO() {
+        return productoDAO;
+    }
+
+    public void setProductoDAO(ProductoDAO productoDAO) {
+        this.productoDAO = productoDAO;
+    }
+
+    public MesaDAO getMesadao() {
+        return mesadao;
+    }
+
+    public void setMesadao(MesaDAO mesadao) {
+        this.mesadao = mesadao;
+    }
+
+    public List<Mesa> getTmesa() {
+        return tmesa;
+    }
+
+    public void setTmesa(List<Mesa> tmesa) {
+        this.tmesa = tmesa;
+    }
 
     public PedidoBean() {
         pedido = new Pedido();
@@ -60,16 +121,18 @@ public class PedidoBean implements Serializable {
         this.tipope = tipope;
     }
 
-    public DetallePedidoDAO getTipodao() {
+    public UsuarioDAO getTipodao() {
         return tipodao;
     }
 
-    public void setTipodao(DetallePedidoDAO tipodao) {
+    public void setTipodao(UsuarioDAO tipodao) {
         this.tipodao = tipodao;
     }
 
     public String newPedido() {
         this.pedido = new Pedido();
+        this.pedido.setUsuario(new Usuario());
+        this.pedido.setMesa(new Mesa());
         this.pedido.setDetalles(new ArrayList<>());
         return "add";
     }
@@ -90,7 +153,7 @@ public class PedidoBean implements Serializable {
     }
 
     public List<Pedido> getAll() throws Exception {
-         if (tipope == null) {
+        if (tipope == null) {
             tipope = dao.getAll();
             for (Pedido pedido : tipope) {
                 // Cargar los detalles del pedido
@@ -138,8 +201,8 @@ public class PedidoBean implements Serializable {
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 
-    //obtener categorias xdd
-    public List<DetallePedido> getTipos() {
+    //obtener usuarioooos xdd
+    public List<Usuario> getTipos() {
         if (tipos == null) {
             tipos = tipodao.getAll();
         }
@@ -150,4 +213,22 @@ public class PedidoBean implements Serializable {
     public List<EstadoPedido> getEstados() {
         return Arrays.asList(EstadoPedido.values());
     }
+
+    //para el número de mesas
+    public List<Mesa> getMesas() {
+        if (tmesa == null) {
+            tmesa = mesadao.getAll();
+        }
+        return tmesa;
+    }
+    
+    
+    public void addDetalle() {
+        detallesPedido.add(new DetallePedido());
+    }
+
+    public void removeDetalle(DetallePedido detalle) {
+        detallesPedido.remove(detalle);
+    }
 }
+

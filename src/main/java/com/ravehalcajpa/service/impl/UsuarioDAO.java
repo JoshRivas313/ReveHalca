@@ -4,7 +4,6 @@ import com.ravehalcajpa.connection.conexion;
 import com.ravehalcajpa.model.TipoUsuario;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.DAOuser;
-import com.ravehalcajpa.service.EstadoProducto;
 import com.ravehalcajpa.service.EstadoUser;
 import jakarta.transaction.Transactional;
 import java.sql.PreparedStatement;
@@ -172,5 +171,35 @@ public class UsuarioDAO extends conexion implements DAOuser<Usuario> {
             }
         }
         return false;
+    }
+    
+    
+    @Transactional
+    public List<Usuario> getAllMozo() {
+        String sql = "SELECT id, username FROM Usuario";
+        List<Usuario> lista = new ArrayList<>();
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("id"));
+                u.setUsername(rs.getString("username"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return lista;
     }
 }
