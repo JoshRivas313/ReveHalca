@@ -1,9 +1,9 @@
-
 package com.ravehalcajpa.bean;
 
 import com.ravehalcajpa.model.CategoriaProducto;
 import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.service.EstadoProducto;
+import com.ravehalcajpa.service.Exportacion;
 import com.ravehalcajpa.service.impl.CategoriaProductoDAO;
 import com.ravehalcajpa.service.impl.ProductoDAO;
 import jakarta.annotation.ManagedBean;
@@ -24,6 +24,7 @@ public class ProductoBean implements Serializable {
     private ProductoDAO dao;
     private Producto producto = new Producto();
     private List<Producto> productocat;
+    private Exportacion ex = new Exportacion();
     @Inject
     private CategoriaProductoDAO catdao;
     private List<CategoriaProducto> categorias;
@@ -66,16 +67,16 @@ public class ProductoBean implements Serializable {
     public String editProducto() throws Exception {
         Long id = this.producto.getId();
         this.producto = dao.getById(id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        System.out.println("sssssss"+id);
-        
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+        System.out.println("sssssss" + id);
+
         return "edit";
     }
 
@@ -115,6 +116,16 @@ public class ProductoBean implements Serializable {
     //obtener estados xdd
     public List<EstadoProducto> getEstados() {
         return Arrays.asList(EstadoProducto.values());
+    }
+
+    public boolean exportarProductos() {
+
+        if (dao != null) {
+            return ex.exportarProducto(dao);
+        } else {
+            System.out.println("DAO no está inicializado.");
+            return false;
+        }
     }
 
 }
