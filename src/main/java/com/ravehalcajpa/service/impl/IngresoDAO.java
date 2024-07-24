@@ -1,4 +1,3 @@
-
 package com.ravehalcajpa.service.impl;
 
 import com.ravehalcajpa.connection.conexion;
@@ -27,11 +26,13 @@ public class IngresoDAO extends conexion implements DAO<Ingreso> {
             while (rs.next()) {
                 Ingreso i = new Ingreso();
                 i.setId(rs.getLong("id"));
-                ComprobanteDAO daocom = new ComprobanteDAO();
-                Comprobante c = daocom.getById(rs.getLong("id_comprobante"));
+
+                Comprobante c = new Comprobante();
+
+                c.setId(rs.getLong("id_comprobante"));
                 i.setComprobante(c);
                 i.setFecha(rs.getDate("fecha_ingreso"));
-                i.setTotal(rs.getDouble("Total"));
+                i.setTotal(rs.getDouble("monto_ingreso"));
                 lista.add(i);
             }
 
@@ -58,9 +59,9 @@ public class IngresoDAO extends conexion implements DAO<Ingreso> {
             em.close();
         }
     }
-    
+
     @Transactional
-    public Ingreso getIngresoByComprobante(Long id){
+    public Ingreso getIngresoByComprobante(Long id) {
         String sql = "Select * from Ingreso i where i.id_comprobante = ?;";
         try {
             conectar();
@@ -69,14 +70,14 @@ public class IngresoDAO extends conexion implements DAO<Ingreso> {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Ingreso i = new Ingreso();
-                
+
                 i.setId(rs.getLong("id"));
-                ComprobanteDAO comdao = new ComprobanteDAO();
-                Comprobante com = comdao.getById(rs.getLong("id_comprobante"));
+                Comprobante com = new Comprobante();
+                com.setId(rs.getLong("id_comprobante"));
                 i.setComprobante(com);
                 i.setFecha(rs.getDate("fecha_ingreso"));
                 i.setTotal(rs.getDouble("monto_ingreso"));
-                
+
                 return i;
             }
         } catch (Exception ex) {
@@ -90,9 +91,6 @@ public class IngresoDAO extends conexion implements DAO<Ingreso> {
         }
         return null;
     }
-    
-    
-    
 
     @Override
     @Transactional
@@ -118,17 +116,16 @@ public class IngresoDAO extends conexion implements DAO<Ingreso> {
     }
 
     @Override
-    
+
     public Ingreso update(Ingreso entity) {
-        
+
         return entity;
     }
 
     @Override
     public boolean delete(long id) {
-        
+
         return false;
     }
 
-    
 }

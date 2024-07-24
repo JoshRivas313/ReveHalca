@@ -2,6 +2,7 @@ package com.ravehalcajpa.bean;
 
 import com.ravehalcajpa.model.Comprobante;
 import com.ravehalcajpa.model.Ingreso;
+import com.ravehalcajpa.service.Exportacion;
 import com.ravehalcajpa.service.impl.ComprobanteDAO;
 import com.ravehalcajpa.service.impl.IngresoDAO;
 
@@ -11,6 +12,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ManagedBean
 @RequestScoped
@@ -26,11 +28,10 @@ public class IngresoBean implements Serializable {
 
     @Inject
     private ComprobanteDAO daocom;
-    private Comprobante com;
     private List<Comprobante> comprobantes;
 
     public List<Ingreso> getAll() throws Exception {
-        
+
         this.autocom(dao);
 
         if (Ingreso == null) {
@@ -40,33 +41,32 @@ public class IngresoBean implements Serializable {
         return Ingreso;
     }
 
-    public void autocom(IngresoDAO Ingreso) {
-
+    public void autocom(IngresoDAO ingresoDAO) {
         comprobantes = daocom.getAll();
+        List<Ingreso> existingIngresos = ingresoDAO.getAll();
+        Set<Long> existingComprobanteIds = existingIngresos.stream()
+                .map(ingreso -> ingreso.getComprobante().getId())
+                .collect(Collectors.toSet());
 
-        if (Ingreso.getAll() == null|| Ingreso.getAll().isEmpty()) {
-            for (Comprobante comprobante : comprobantes) {
+        for (Comprobante comprobante : comprobantes) {
+            if (!existingComprobanteIds.contains(comprobante.getId())) {
                 Ingreso ingreso = new Ingreso();
                 ingreso.setComprobante(comprobante);
                 ingreso.setFecha(comprobante.getFecha());
                 ingreso.setTotal(comprobante.getTotal());
                 dao.create(ingreso);
             }
+        }
+    }
 
+    public boolean exportarIngresos() {
+        Exportacion ex = new Exportacion();
+
+        if (dao != null) {
+            return ex.exportarProducto(dao);
         } else {
-
-            for (Comprobante comprobante : comprobantes) {
-                if (dao.getIngresoByComprobante(comprobante.getId()) == null) {
-                    Ingreso ingreso = new Ingreso();
-                    ingreso.setComprobante(comprobante);
-                    ingreso.setFecha(comprobante.getFecha());
-                    ingreso.setTotal(comprobante.getTotal());
-                    dao.create(ingreso);
-                }
-
-            }
-
-            
+            System.out.println("DAO no está inicializado.");
+            return false;
         }
     }
 

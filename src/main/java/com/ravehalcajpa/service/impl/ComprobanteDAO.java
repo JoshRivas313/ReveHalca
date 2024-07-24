@@ -79,14 +79,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
             PreparedStatement st = this.getCn().prepareStatement(sql);
 
             st.setLong(1, id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
-            System.out.println(id);
+            
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -116,9 +109,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
                 List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(p.getId());
                 p.setDetalles(detalles);
 
-                System.out.println("usuario recuperado: " + usu);
-                System.out.println("Pedido recuperado: " + p);
-                System.out.println("Detalles del pedido: " + detalles);
+                
                 c.setIdped(p);
                 return c;
             }

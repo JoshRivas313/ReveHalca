@@ -24,7 +24,6 @@ public class ProductoBean implements Serializable {
     private ProductoDAO dao;
     private Producto producto = new Producto();
     private List<Producto> productocat;
-    private Exportacion ex = new Exportacion();
     @Inject
     private CategoriaProductoDAO catdao;
     private List<CategoriaProducto> categorias;
@@ -110,15 +109,7 @@ public class ProductoBean implements Serializable {
         return Arrays.asList(EstadoProducto.values());
     }
 
-    public boolean exportarProductos() {
-
-        if (dao != null) {
-            return ex.exportarProducto(dao);
-        } else {
-            System.out.println("DAO no está inicializado.");
-            return false;
-        }
-    }
+    
     
     private List<Producto> allprod;
 

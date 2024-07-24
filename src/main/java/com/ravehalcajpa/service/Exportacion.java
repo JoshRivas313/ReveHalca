@@ -1,6 +1,7 @@
 package com.ravehalcajpa.service;
+import com.ravehalcajpa.model.Ingreso;
 import com.ravehalcajpa.model.Producto;
-import com.ravehalcajpa.service.impl.ProductoDAO;
+import com.ravehalcajpa.service.impl.IngresoDAO;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -11,28 +12,28 @@ import java.util.List;
 
 public class Exportacion {
     
-    public boolean exportarProducto(ProductoDAO dao){
-        List<Producto> productos = dao.getAll();
+    public boolean exportarProducto(IngresoDAO dao){
+        List<Ingreso> ingresos = dao.getAll();
         
-        if (productos == null || productos.isEmpty()) {
-            System.out.println("No hay productos para exportar.");
+        if (ingresos == null || ingresos.isEmpty()) {
+            System.out.println("No hay Ingresos para exportar.");
             return false;
         }
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Productos");
+        XSSFSheet sheet = workbook.createSheet("Ingresos");
         int rownum = 0;
         Row headerRow = sheet.createRow(rownum++);
-        String[] headers = {"ID", "Nombre", "Estado", "Precio"};
+        String[] headers = {"ID", "ID Comprobante", "Fecha", "Monto"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
         }
-        for (Producto producto : productos) {
+        for (Ingreso ingreso : ingresos) {
             Row row = sheet.createRow(rownum++);
-            row.createCell(0).setCellValue(producto.getId());
-            row.createCell(1).setCellValue(producto.getNombre());
-            row.createCell(2).setCellValue(producto.getEstado().toString());
-            row.createCell(3).setCellValue(producto.getPrecio());
+            row.createCell(0).setCellValue(ingreso.getId());
+            row.createCell(1).setCellValue(ingreso.getComprobante().getId());
+            row.createCell(2).setCellValue(ingreso.getFecha().toString());
+            row.createCell(3).setCellValue(ingreso.getTotal());
         }
         
         String userHome = System.getProperty("user.home");
@@ -42,7 +43,7 @@ public class Exportacion {
             exportsDir.mkdirs();
         }
         
-        File archivo = new File(exportsDir, "productos.xlsx");
+        File archivo = new File(exportsDir, "ingresos.xlsx");
         
         try (FileOutputStream salida = new FileOutputStream(archivo)) {
             workbook.write(salida);

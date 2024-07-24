@@ -16,7 +16,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Gestion de Inventario
+        Gestion de Ingresos
     </ui:define>
 
     <ui:define name="body">
@@ -25,32 +25,32 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton action="#{inventarioBean.newInventario}" icon="fa fa-plus"
-                                         value="Nuevo" styleClass="btn-primary"/>
+                        <p:commandButton action="#{ingresoBean.exportarIngresos}" icon="fa fa-plus"
+                                         value="Exportar a excel" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                      </div>
 
                     <p:separator/>
-                    <p:dataTable widgetVar="productoTable" var="inve" value="#{inventarioBean.getAll()}" rows="4"
-                                 rowKey="#{inve.id}" lazy="true" paginator="true"
+                    <p:dataTable widgetVar="productoTable" var="ing" value="#{ingresoBean.getAll()}" rows="4"
+                                 rowKey="#{ing.id}" lazy="true" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
                                  rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
 
-                        <p:column headerText="Id" >
-                            #{inve.id}
+                        <p:column headerText="Id de ingreso" >
+                            #{ing.id}
                         </p:column>
 
-                        <p:column headerText="Nombre de Producto" >
-                            #{inve.idprod.nombre}
+                        <p:column headerText="ID de Comprobante" >
+                            #{ing.comprobante.id}
                         </p:column>
                         
-                        <p:column headerText="Cantidad disponible" >
-                            #{inve.cantidad}
+                        <p:column headerText="Fecha" >
+                            #{ing.fecha}
                         </p:column>
                         
-                        <p:column headerText="Estado" >
-                            #{inve.idprod.estado}
+                        <p:column headerText="Monto" >
+                            #{ing.total}
                         </p:column>
 
                         
