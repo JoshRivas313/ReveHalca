@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class ProductoDAO extends conexion implements DAO<Producto> {
 
     @Override
+    @Transactional
     public List<Producto> getAll() {
         String sql = "SELECT p.id, p.nombre,c.nombrecategoria, p.estado,p.precio FROM producto p"
                 + " JOIN categoriaproducto c ON p.id_Categoria_Producto = c.id;";
@@ -52,6 +53,7 @@ public class ProductoDAO extends conexion implements DAO<Producto> {
     }
 
     @Override
+    
     public Producto getById(Long id) {
         BaseDAO bd = new BaseDAO();
         EntityManager em = bd.getEntityManager();
@@ -63,6 +65,7 @@ public class ProductoDAO extends conexion implements DAO<Producto> {
     }
 
     @Override
+    @Transactional
     public Producto create(Producto entity) {
         String sql = "INSERT INTO producto (id_Categoria_Producto, nombre, estado, precio) VALUES (?, ?, ?, ?)";
         try {
@@ -87,6 +90,7 @@ public class ProductoDAO extends conexion implements DAO<Producto> {
     }
 
     @Override
+    @Transactional
     public Producto update(Producto entity) {
         String sql = "UPDATE producto SET id_Categoria_Producto = ?, nombre = ?, estado = ?, precio = ? WHERE id = ?";
         try {
@@ -112,6 +116,7 @@ public class ProductoDAO extends conexion implements DAO<Producto> {
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         String sql = "UPDATE producto SET estado = 'Culminado' WHERE id = ?";
         try {

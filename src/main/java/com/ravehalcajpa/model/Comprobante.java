@@ -3,6 +3,7 @@ package com.ravehalcajpa.model;
 import com.ravehalcajpa.service.MetodoPago;
 import jakarta.persistence.*;
 import java.sql.Time;
+import java.util.Date;
 
 @Entity
 
@@ -28,11 +29,13 @@ public class Comprobante {
 
     private Time hora;
     private double total;
+    
+    private Date fecha;
 
     public Comprobante() {
     }
 
-    public Comprobante(Long id, Pedido idped, String nombrecliente, String apellidocliente, Usuario iduser, MetodoPago pago, Time hora, double total) {
+    public Comprobante(Long id, Pedido idped, String nombrecliente, String apellidocliente, Usuario iduser, MetodoPago pago, Time hora, double total, Date fecha) {
         this.id = id;
         this.idped = idped;
         this.nombrecliente = nombrecliente;
@@ -41,6 +44,7 @@ public class Comprobante {
         this.pago = pago;
         this.hora = hora;
         this.total = total;
+        this.fecha = fecha;
     }
 
     public Long getId() {
@@ -107,9 +111,13 @@ public class Comprobante {
         this.total = total;
     }
 
-    @Override
-    public String toString() {
-        return "Comprobante{" + "id=" + id + ", idped=" + idped + ", nombrecliente=" + nombrecliente + ", apellidocliente=" + apellidocliente + ", iduser=" + iduser + ", pago=" + pago + ", hora=" + hora + ", total=" + total + '}';
+    public Date getFecha() {
+        return fecha;
     }
 
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    
 }

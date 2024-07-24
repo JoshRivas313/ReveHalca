@@ -26,7 +26,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     public List<Comprobante> getAll() {
         String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, "
                 + "c.apellidocliente,u.id as iduser, u.username, c.Metodo_pago, "
-                + "c.hora_comprobante, c.total_comprobante FROM comprobante c "
+                + "c.hora_comprobante, c.total_comprobante, c.fecha_comprobante FROM comprobante c "
                 + "JOIN usuario u ON c.id_usuario = u.id "
                 + "JOIN pedido p ON c.id_pedido = p.id;";
         List<Comprobante> lista = new ArrayList<>();
@@ -49,7 +49,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
                 c.setPago(MetodoPago.valueOf(rs.getNString("Metodo_pago")));
                 c.setHora(rs.getTime("hora_comprobante"));
                 c.setTotal(rs.getDouble("total_comprobante"));
-
+                c.setFecha(rs.getDate("fecha_comprobante"));
                 lista.add(c);
             }
 
@@ -105,6 +105,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
                 c.setPago(MetodoPago.valueOf(rs.getNString("Metodo_pago")));
                 c.setHora(rs.getTime("hora_comprobante"));
                 c.setTotal(rs.getDouble("total_comprobante"));
+                c.setFecha(rs.getDate("fecha_comprobante"));
 
                 Mesa me = new Mesa();
                 me.setId(rs.getLong("id_mesa"));
@@ -136,7 +137,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     @Override
     @Transactional
     public Comprobante create(Comprobante entity) {
-        String sql = "INSERT INTO comprobante (id_pedido, nombrecliente, apellidocliente, id_usuario,Metodo_pago, hora_comprobante, total_comprobante) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO comprobante (id_pedido, nombrecliente, apellidocliente, id_usuario,Metodo_pago, hora_comprobante, total_comprobante,fecha_comprobante) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             conectar();
             PreparedStatement st = this.getCn().prepareStatement(sql);
@@ -147,7 +148,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
             st.setString(5, entity.getPago().name());
             st.setTime(6, entity.getHora());
             st.setDouble(7, entity.getTotal());
-
+            st.setDate(8, (Date) entity.getFecha());
             st.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,7 +166,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     @Transactional
     public Comprobante update(Comprobante entity) {
         String sql = "UPDATE comprobante SET id_pedido = ?, nombrecliente = ?, apellidocliente = ?, "
-                + "id_usuario = ?, Metodo_pago = ?, hora_comprobante = ?, total_comprobante = ? "
+                + "id_usuario = ?, Metodo_pago = ?, hora_comprobante = ?, total_comprobante = ?, fecha_comprobante= ? "
                 + "WHERE id = ?";
 
         try {
@@ -178,7 +179,8 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
             st.setString(5, entity.getPago().name());
             st.setTime(6, entity.getHora());
             st.setDouble(7, entity.getTotal());
-            st.setLong(8, entity.getId());
+            st.setDate(8, (Date) entity.getFecha());
+            st.setLong(9, entity.getId());
 
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {

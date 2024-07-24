@@ -25,7 +25,7 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton action="#{comprobanteBean.newComprobante()}" icon="fa fa-plus"
+                        <p:commandButton action="#{comprobanteBean.newComprobante}" icon="fa fa-plus"
                                          value="Nuevo" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                     </div>
@@ -63,6 +63,10 @@
 
                         <p:column headerText="Hora" >
                             #{com.hora}
+                        </p:column>
+                        
+                        <p:column headerText="Fecha" >
+                            #{com.fecha}
                         </p:column>
 
                         <p:column headerText="Total" >

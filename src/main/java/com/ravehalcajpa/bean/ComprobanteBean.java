@@ -212,6 +212,7 @@ public class ComprobanteBean implements Serializable {
         this.comprobante.setIdped(pedidoDAO.getById(selectedPedidoId));
         this.comprobante.setHora(new Time(System.currentTimeMillis()));
         this.comprobante.setTotal(this.total);
+        this.comprobante.setFecha(new Date());
         dao.create(comprobante);
         clientedao.create(cli);
         return "/comprobante/index.xhtml?faces-redirect=true";
@@ -239,6 +240,7 @@ public class ComprobanteBean implements Serializable {
         this.comprobante.setIduser(uhm);
         this.comprobante.setIdped(pedidoDAO.getById(selectedPedidoId));
         this.comprobante.setTotal(this.total);
+        this.comprobante.setFecha(new Date());
         dao.update(comprobante);
         clientedao.update(clien);
         Comprobantecat = null;

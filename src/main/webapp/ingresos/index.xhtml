@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Mesas listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Gestion de Inventario
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton action="#{inventarioBean.newInventario}" icon="fa fa-plus"
+                                         value="Nuevo" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+                     </div>
+
+                    <p:separator/>
+                    <p:dataTable widgetVar="productoTable" var="inve" value="#{inventarioBean.getAll()}" rows="4"
+                                 rowKey="#{inve.id}" lazy="true" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
+                                 rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+
+                        <p:column headerText="Id" >
+                            #{inve.id}
+                        </p:column>
+
+                        <p:column headerText="Nombre de Producto" >
+                            #{inve.idprod.nombre}
+                        </p:column>
+                        
+                        <p:column headerText="Cantidad disponible" >
+                            #{inve.cantidad}
+                        </p:column>
+                        
+                        <p:column headerText="Estado" >
+                            #{inve.idprod.estado}
+                        </p:column>
+
+                        
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </h:form>
+
+
+
+
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
