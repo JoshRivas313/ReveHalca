@@ -28,16 +28,10 @@
                         <p:commandButton action="#{productoBean.newProducto}" icon="fa fa-plus"
                                          value="Nuevo" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
-                        
-                        
-                        <p:commandButton action="#{productoBean.exportarProductos()}" 
-                                         value="Exportar" styleClass="btn-primary"/>
-                        <p:spacer width="5"/>
-
                      </div>
 
                     <p:separator/>
-                    <p:dataTable widgetVar="productoTable" var="prod" value="#{productoBean.getAll()}" rows="4"
+                    <p:dataTable widgetVar="productoTable" var="prod" value="#{productoBean.allProd}" rows="4"
                                  rowKey="#{prod.id}" lazy="true" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"

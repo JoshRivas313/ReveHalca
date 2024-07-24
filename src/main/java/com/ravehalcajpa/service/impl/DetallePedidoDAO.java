@@ -122,23 +122,25 @@ public class DetallePedidoDAO extends conexion implements DAO<DetallePedido> {
     @Override
     @Transactional
     public boolean delete(long id) {
-        String sql = "UPDATE detalle_pedido SET estado = 'Cancelado' WHERE id = ?";
-        try {
-            conectar();
-            PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setLong(1, id);
-            int rowsUpdated = st.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (Exception ex) {
-            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                cerrar();
-            } catch (Exception ex) {
-                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         return false;
+        //esto era para pedidodao xddd
+//        String sql = "UPDATE detalle_pedido SET estado = 'Cancelado' WHERE id = ?";
+//        try {
+//            conectar();
+//            PreparedStatement st = this.getCn().prepareStatement(sql);
+//            st.setLong(1, id);
+//            int rowsUpdated = st.executeUpdate();
+//            return rowsUpdated > 0;
+//        } catch (Exception ex) {
+//            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                cerrar();
+//            } catch (Exception ex) {
+//                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        return false;
     }
 
     @Transactional

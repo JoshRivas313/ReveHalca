@@ -2,8 +2,7 @@ package com.ravehalcajpa.model;
 
 import com.ravehalcajpa.service.EstadoPedido;
 import jakarta.persistence.*;
-import java.sql.Time;
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -14,27 +13,27 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @Column(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "id_mesa")
+    @Column(name = "id_mesa", nullable = false)
     private Mesa mesa;
 
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    private Time hora;
+    private LocalTime hora;
+
+    @Temporal(TemporalType.DATE)
     private Date fecha;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetallePedido> detalles = new ArrayList<>();
+    private List<DetallePedido> detalles;
 
     public Pedido() {
     }
 
-    public Pedido(Long id, Usuario usuario, Mesa mesa, EstadoPedido estado, Time hora, Date fecha) {
+    public Pedido(Long id, Usuario usuario, Mesa mesa, EstadoPedido estado, LocalTime hora, Date fecha) {
         this.id = id;
         this.usuario = usuario;
         this.mesa = mesa;
@@ -75,11 +74,11 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public Time getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(Time hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 
@@ -96,30 +95,15 @@ public class Pedido {
     }
 
     public void setDetalles(List<DetallePedido> detalles) {
-        this.detalles.clear();
-        if (detalles != null) {
-            this.detalles.addAll(detalles);
-            for (DetallePedido detalle : this.detalles) {
-                detalle.setPedido(this);
-            }
-        }
-    }
+        this.detalles = detalles;
 
-    public void addDetalle(DetallePedido detalle) {
-        this.detalles.add(detalle);
-        detalle.setPedido(this);
-    }
-    
-    public void removeDetalle(DetallePedido detalle) {
-        this.detalles.remove(detalle);
-        detalle.setPedido(null);
     }
 
     @Override
-     public String toString() {
-        return "Pedido{" + "id=" + id + ", usuario=" + usuario + ", mesa=" + mesa + 
-               ", estado=" + estado + ", hora=" + hora +  ", fecha=" + fecha + 
-               ", detalles=" + (detalles != null ? detalles.size() : "null") +  '}';
+    public String toString() {
+        return "Pedido{" + "id=" + id + ", usuario=" + usuario + ", mesa=" + mesa
+                + ", estado=" + estado + ", hora=" + hora + ", fecha=" + fecha
+                + ", detalles=" + (detalles != null ? detalles.size() : "null") + '}';
     }
 
 }

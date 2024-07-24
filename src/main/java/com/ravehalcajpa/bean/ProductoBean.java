@@ -127,5 +127,15 @@ public class ProductoBean implements Serializable {
             return false;
         }
     }
+    
+    private List<Producto> allprod;
+
+    public List<Producto> getAllProd() throws Exception {
+        if (allprod == null) {
+            allprod = dao.getAll();
+        }
+        return allprod;
+    }
+
 
 }

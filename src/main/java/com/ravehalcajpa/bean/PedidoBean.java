@@ -3,25 +3,27 @@ package com.ravehalcajpa.bean;
 import com.ravehalcajpa.model.DetallePedido;
 import com.ravehalcajpa.model.Mesa;
 import com.ravehalcajpa.model.Pedido;
+import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.EstadoPedido;
 import com.ravehalcajpa.service.impl.DetallePedidoDAO;
 import com.ravehalcajpa.service.impl.MesaDAO;
 import com.ravehalcajpa.service.impl.PedidoDAO;
-import com.ravehalcajpa.service.impl.ProductoDAO;
 import com.ravehalcajpa.service.impl.UsuarioDAO;
 import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 @Named("pedidoBean")
 public class PedidoBean implements Serializable {
 
@@ -41,39 +43,28 @@ public class PedidoBean implements Serializable {
     private MesaDAO mesadao;
     private List<Mesa> tmesa;
 
-    private List<DetallePedido> detallesPedido = new ArrayList<>();
     @Inject
-    private ProductoDAO productoDAO;
+    private DetallePedidoBean detallePedidoBean;
 
     @PostConstruct
     public void init() {
-        if (pedido == null) {
-            pedido = new Pedido();
+        try {
+            if (pedido == null) {
+                pedido = new Pedido();
+            }
+            if (pedido.getUsuario() == null) {
+                pedido.setUsuario(new Usuario());
+            }
+            if (pedido.getMesa() == null) {
+                pedido.setMesa(new Mesa());
+            }
+            if (pedido.getDetalles() == null) {
+                pedido.setDetalles(new ArrayList<>());
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(PedidoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (pedido.getUsuario() == null) {
-            pedido.setUsuario(new Usuario());
-        }
-        if (pedido.getMesa() == null) {
-            pedido.setMesa(new Mesa());
-        }
-        detallesPedido.add(new DetallePedido());
-
-    }
-
-    public List<DetallePedido> getDetallesPedido() {
-        return detallesPedido;
-    }
-
-    public void setDetallesPedido(List<DetallePedido> detallesPedido) {
-        this.detallesPedido = detallesPedido;
-    }
-
-    public ProductoDAO getProductoDAO() {
-        return productoDAO;
-    }
-
-    public void setProductoDAO(ProductoDAO productoDAO) {
-        this.productoDAO = productoDAO;
     }
 
     public MesaDAO getMesadao() {
@@ -92,9 +83,20 @@ public class PedidoBean implements Serializable {
         this.tmesa = tmesa;
     }
 
-    public PedidoBean() {
-        pedido = new Pedido();
-        pedido.setDetalles(new ArrayList<>());
+    public DetallePedidoBean getDetallePedidoBean() {
+        return detallePedidoBean;
+    }
+
+    public void setDetallePedidoBean(DetallePedidoBean detallePedidoBean) {
+        this.detallePedidoBean = detallePedidoBean;
+    }
+
+    public List<DetallePedido> getDetallesPedido() {
+        return detallePedidoBean.getDetallesPedido();
+    }
+
+    public void setDetallesPedido(List<DetallePedido> detallesPedido) {
+        detallePedidoBean.setDetallesPedido(detallesPedido);
     }
 
     public PedidoDAO getDao() {
@@ -133,22 +135,15 @@ public class PedidoBean implements Serializable {
         this.pedido = new Pedido();
         this.pedido.setUsuario(new Usuario());
         this.pedido.setMesa(new Mesa());
-        this.pedido.setDetalles(new ArrayList<>());
+        detallePedidoBean.clearDetalles();
         return "add";
     }
 
     public String editPedido() throws Exception {
         long id = this.pedido.getId();
+        System.out.println("Editando pedido con ID: " + id);
         this.pedido = dao.getById(id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
+        detallePedidoBean.setDetallesPedido(pedido.getDetalles());
         return "edit";
     }
 
@@ -162,35 +157,18 @@ public class PedidoBean implements Serializable {
                 pedido.setDetalles(detalles);
             }
         }
-
-        if (tipope != null) {
-            for (Pedido ped : tipope) {
-                System.out.println("Pedido ID: " + ped.getId());
-                System.out.println("Estado: " + ped.getEstado());
-                System.out.println("Hora: " + ped.getHora());
-                System.out.println("Fecha: " + ped.getFecha());
-                System.out.println("Nombre del Usuario: " + (ped.getUsuario() != null ? ped.getUsuario().getUsername() : "N/A"));
-                System.out.println("ID de la Mesa: " + (ped.getMesa() != null ? ped.getMesa().getId() : "N/A"));
-                System.out.println("Detalles:");
-                for (DetallePedido detalle : ped.getDetalles()) {
-                    System.out.println("  Producto: " + detalle.getNombreProducto());
-                    System.out.println("  Precio: " + detalle.getPrecioProducto());
-                    System.out.println("  Cantidad: " + detalle.getCantidad());
-                }
-            }
-        } else {
-            System.out.println("No se obtuvieron pedidos.");
-        }
-
         return tipope;
     }
 
     public String create() throws Exception {
+        pedido.setDetalles(detallePedidoBean.getDetallesPedido());
         dao.create(pedido);
+        tipope = null;
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 
     public String update() {
+        pedido.setDetalles(detallePedidoBean.getDetallesPedido());
         dao.update(pedido);
         return "/pedido/index.xhtml?faces-redirect=true";
     }
@@ -201,7 +179,7 @@ public class PedidoBean implements Serializable {
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 
-    //obtener usuarioooos xdd
+    // Obtener usuarios
     public List<Usuario> getTipos() {
         if (tipos == null) {
             tipos = tipodao.getAll();
@@ -209,26 +187,35 @@ public class PedidoBean implements Serializable {
         return tipos;
     }
 
-    //obtener estados xdd
+    // Obtener estados
     public List<EstadoPedido> getEstados() {
         return Arrays.asList(EstadoPedido.values());
     }
 
-    //para el número de mesas
+    // Obtener mesas
     public List<Mesa> getMesas() {
         if (tmesa == null) {
             tmesa = mesadao.getAll();
         }
         return tmesa;
     }
-    
-    
-    public void addDetalle() {
-        detallesPedido.add(new DetallePedido());
+
+    public void addDetalle(Producto producto) {
+        detallePedidoBean.addDetalle(producto);
+        System.out.println("llegué a pedidoBean");
     }
 
     public void removeDetalle(DetallePedido detalle) {
-        detallesPedido.remove(detalle);
+        detallePedidoBean.removeDetalle(detalle);
+    }
+
+    public void menosProd(DetallePedido detalle) {
+        detallePedidoBean.decrementarCantidad(detalle);
+    }
+
+    public void masProd(DetallePedido detalle) {
+        System.out.println("mas pedido");
+        detallePedidoBean.incrementarCantidad(detalle);
+
     }
 }
-

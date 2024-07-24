@@ -52,7 +52,7 @@
                         <div class="ui-sm-12 ui-g-11">
                             <p:calendar id="inptHoraPed" value="#{pedidoBean.pedido.hora}" required="true"
                                         timeOnly="true" pattern="HH:mm" showOn="button" navigator="true" 
-                                        showButtonPanel="true" />
+                                        showButtonPanel="true" converter="timeConverter"/>
                             <span class="help-block">
                                 <p:message for="inptHoraPed" />
                             </span>
@@ -106,7 +106,50 @@
                     </div>
 
 
+                    <!-- Gestión de detalles del pedido -->
+                    <div class="ui-sm-12 ui-g-12">
+                        <p:panel header="Detalles del Pedido">
+                            <p:spacer height="10"/>
+                            <p:dataTable id="detallesTable" var="detalle" value="#{pedidoBean.detallesPedido}">
+                                <p:column headerText="Producto">
+                                    
+                                            <h:outputText value="#{detalle.producto.nombre}"/>
+                                        
+                                </p:column>
+                                <p:column headerText="Cantidad">
+                                    
+                                            <h:outputText value="#{detalle.cantidad}"/>
+                                       
+                                </p:column>
+                                <p:column headerText="Acciones">
+                                    <p:commandButton value="Eliminar" action="#{pedidoBean.removeDetalle(detalle)}" update="detallesTable" icon="fa fa-trash"/>
+                                    <p:commandButton icon="fa fa-minus" action="#{pedidoBean.menosProd(detalle)}" update="detallesTable"/>
+                                    <p:commandButton icon="fa fa-plus" action="#{pedidoBean.masProd(detalle)}" update="detallesTable"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
 
+
+
+                    <!-- Lista de productos disponibles -->
+                    <div class="ui-sm-12 ui-g-12">
+                        <p:panel header="Productos Disponibles">
+                            <p:dataTable var="producto" value="#{detpedidoBean.productos}">
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{producto.nombre}" />
+                                </p:column>
+                                <p:column headerText="Precio">
+                                    <h:outputText value="#{producto.precio}" />
+                                </p:column>
+                                <p:column headerText="Acción">
+                                    <p:commandButton value="Añadir al Pedido" action="#{pedidoBean.addDetalle(producto)}" update="detallesTable" icon="fa fa-plus" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+
+                       
                 </div>
             </p:panel>
 
