@@ -15,6 +15,7 @@ import com.ravehalcajpa.service.impl.UsuarioDAO;
 import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 @Named("comprobanteBean")
 
 public class ComprobanteBean implements Serializable {
@@ -173,7 +174,13 @@ public class ComprobanteBean implements Serializable {
         this.selectedMesaId = comprobante.getIdped().getMesa().getId();
 
         this.clien = clientedao.getByNombre(this.comprobante.getNombrecliente(), this.comprobante.getApellidocliente());
-         
+
+        System.out.println("el cliente obtenido" + clien);
+        System.out.println("el cliente obtenido" + clien);
+        System.out.println("el cliente obtenido" + clien);
+        System.out.println("el cliente obtenido" + clien);
+        System.out.println("el cliente obtenido" + clien);
+        System.out.println("el cliente obtenido" + clien);
         return "edit";
     }
 
@@ -212,6 +219,9 @@ public class ComprobanteBean implements Serializable {
     }
 
     public String update() throws Exception {
+        
+        
+
         Mesa mesa = mesaDAO.getById(selectedMesaId);
 
         Pedido pedido = pedidoDAO.getPedidoByMesaId(mesa.getId());
@@ -224,11 +234,15 @@ public class ComprobanteBean implements Serializable {
         this.clien.setNombreCliente(comprobante.getNombrecliente());
         this.clien.setApellidoCliente(comprobante.getApellidocliente());
         Usuario uhm = this.comprobante.getIduser();
+        
+
+        this.comprobante.setHora(new Time(System.currentTimeMillis()));
         this.comprobante.setIduser(uhm);
         this.comprobante.setIdped(pedidoDAO.getById(selectedPedidoId));
         this.comprobante.setTotal(this.total);
         dao.update(comprobante);
         clientedao.update(clien);
+        Comprobantecat = null;
         return "/comprobante/index.xhtml?faces-redirect=true";
     }
 

@@ -11,9 +11,7 @@ import com.ravehalcajpa.model.Mesa;
 import com.ravehalcajpa.model.Pedido;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.DAO;
-import com.ravehalcajpa.service.EstadoPedido;
 import com.ravehalcajpa.service.MetodoPago;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
@@ -94,16 +92,16 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
                 p.setId(rs.getLong("id_pedido"));
                 c.setNombrecliente(rs.getNString("nombrecliente"));
                 c.setApellidocliente(rs.getNString("apellidocliente"));
-                Usuario usu ;
+                Usuario usu;
                 UsuarioDAO usudao = new UsuarioDAO();
-        
+
                 usu = usudao.getById(rs.getInt("id_usuario"));
                 c.setIduser(usu);
 
                 c.setPago(MetodoPago.valueOf(rs.getNString("Metodo_pago")));
                 c.setHora(rs.getTime("hora_comprobante"));
                 c.setTotal(rs.getDouble("total_comprobante"));
-                
+
                 Mesa me = new Mesa();
                 me.setId(rs.getLong("id_mesa"));
                 p.setMesa(me);
@@ -162,8 +160,38 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     @Override
     @Transactional
     public Comprobante update(Comprobante entity) {
+        String sql = "UPDATE comprobante SET id_pedido = ?, nombrecliente = ?, apellidocliente = ?, "
+                + "id_usuario = ?, Metodo_pago = ?, hora_comprobante = ?, total_comprobante = ? "
+                + "WHERE id = ?";
 
-        return entity;
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            st.setLong(1, entity.getIdped().getId());
+            st.setString(2, entity.getNombrecliente());
+            st.setString(3, entity.getApellidocliente());
+            st.setLong(4, entity.getIduser().getId());
+            st.setString(5, entity.getPago().name());
+            st.setTime(6, entity.getHora());
+            st.setDouble(7, entity.getTotal());
+            st.setLong(8, entity.getId());
+
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                return entity;
+            } else {
+                throw new Exception("No se pudo actualizar el comprobante con ID: " + entity.getId());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, "Error al actualizar el comprobante", ex);
+            return null;
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, "Error al cerrar la conexión", ex);
+            }
+        }
     }
 
     @Override

@@ -16,7 +16,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Gestion de Comprobantes
+        Gestion de Pedidos
     </ui:define>
 
     <ui:define name="body">
@@ -25,79 +25,68 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton action="#{comprobanteBean.newComprobante()}" icon="fa fa-plus"
+                        <p:commandButton action="#{pedidoBean.newPedido()}" icon="fa fa-plus"
                                          value="Nuevo" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                     </div>
 
                     <p:separator/>
-                    <p:dataTable widgetVar="productoTable" var="com" value="#{comprobanteBean.getAll()}" rows="4"
-                                 rowKey="#{com.id}" lazy="true" paginator="true"
+                    <p:dataTable widgetVar="productoTable" var="ped" value="#{pedidoBean.getAll()}" rows="8"
+                                 rowKey="#{ped.id}" lazy="true" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
                                  rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
 
                         <p:column headerText="ID" >
-                            #{com.id}
+                            #{ped.id}
                         </p:column>
 
-                        <p:column headerText="Id de pedido" >
-                            #{com.idped.id}
-                        </p:column>
-
-                        <p:column headerText="Nombre Cliente" >
-                            #{com.nombrecliente}
-                        </p:column>
-
-                        <p:column headerText="Apellido Cliente" >
-                            #{com.apellidocliente}
-                        </p:column>
-
-                        <p:column headerText="Nombre de Cajero" >
-                            #{com.iduser.username}
-                        </p:column>
-
-                        <p:column headerText="Metodo de pago" >
-                            #{com.pago}
+                        <p:column headerText="Estado" >
+                            #{ped.estado}
                         </p:column>
 
                         <p:column headerText="Hora" >
-                            #{com.hora}
+                            #{ped.hora}
                         </p:column>
 
-                        <p:column headerText="Total" >
-                            #{com.total}
+                        <p:column headerText="Fecha" >
+                            #{ped.fecha}
                         </p:column>
 
+                        <p:column headerText="Nombre del Mozo" >
+                            #{ped.usuario.username}
+                        </p:column>
+
+                        <p:column headerText="N° de Mesa" >
+                            #{ped.mesa.id}
+                        </p:column>
+                        
                         <p:column headerText="Detalles" >
-                            <h:dataTable value="#{com.idped.detalles}" var="detalle">
+                            <h:dataTable value="#{ped.detalles}" var="detalle">
                                 <p:column>
                                     <f:facet name="header">Producto</f:facet>
-                                        #{detalle.nombreProducto}
+                                    #{detalle.nombreProducto}
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">Precio</f:facet>
-                                        #{detalle.precioProducto}
+                                    #{detalle.precioProducto}
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">Cantidad</f:facet>
-                                        #{detalle.cantidad}
+                                    #{detalle.cantidad}
                                 </p:column>
                             </h:dataTable>
                         </p:column>
-
-
-
-
+                        
 
                         <p:column headerText="Operación">
                             <h:form>
-                                <p:commandButton icon="pi pi-pencil" action="#{comprobanteBean.editComprobante}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                    <f:setPropertyActionListener value="#{com.id}"  target="#{comprobanteBean.comprobante.id}" />
+                                <p:commandButton icon="pi pi-pencil" action="#{pedidoBean.editPedido()}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                    <f:setPropertyActionListener value="#{ped.id}"  target="#{pedidoBean.pedido.id}" />
                                 </p:commandButton>
 
-                                <p:commandButton action="#{comprobanteBean.delete}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
-                                    <f:setPropertyActionListener value="#{com.id}" target="#{comprobanteBean.comprobante.id}" />
+                                <p:commandButton action="#{pedidoBean.delete()}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
+                                    <f:setPropertyActionListener value="#{ped.id}" target="#{pedidoBean.pedido.id}" />
                                 </p:commandButton>
                             </h:form>
 
