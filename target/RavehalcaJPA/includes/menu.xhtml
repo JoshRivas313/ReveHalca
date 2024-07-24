@@ -25,23 +25,6 @@
         <li>
 
             <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Administrador'}">
-                <p:link outcome="/mesas/index">
-                    <i class="fa fa-object-group"></i>
-                    <span>Mesas</span>
-                </p:link>
-                <p:link outcome="/inventario/index">
-                    <i class="fa fa-calculator"></i>
-                    <span>Inventario</span>
-                </p:link>
-                <p:link outcome="/clientes/index">
-                    <i class="fa fa-child"></i>
-                    <span>Clientes</span>
-                </p:link>
-                <p:link outcome="/egresos/index">
-                    <i class="fa fa-money"></i>
-                    <span>Egresos</span>
-                </p:link>
-
                 <p:link outcome="/producto/index">
                     <i class="fa fa-tags"></i>
                     <span>Productos</span>
@@ -57,21 +40,23 @@
                     <span>Perfil de Usuarios</span>
                 </p:link>
                 
-                <p:link outcome="/pedido/index">
-                    <i class= "fa fa-bell"></i>
-                    <span>Pedidos</span>
-                </p:link>
                 
                 <p:link outcome="/comprobante/index">
                     <i class= "fa fa-bell"></i>
                     <span>Comprobante</span>
                 </p:link>
+                
             </c:if>
 
             <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Mozo'}">
                 <p:link outcome="/mesas/index">
                     <i class="fa fa-object-group"></i>
                     <span>Mesas</span>
+                </p:link>
+                
+                <p:link outcome="/pedido/index">
+                    <i class= "fa fa-bell"></i>
+                    <span>Pedidos</span>
                 </p:link>
             </c:if>
 
@@ -80,12 +65,30 @@
                     <i class="fa fa-child"></i>
                     <span>Clientes</span>
                 </p:link>
+                
+                <p:link outcome="/comprobante/index">
+                    <i class= "fa fa-bell"></i>
+                    <span>Comprobante</span>
+                </p:link>
             </c:if>
 
             <c:if test="#{logonMB.usuario.tipoUsuario.nombre == 'Gerente'}">
                 <p:link outcome="/egresos/index">
                     <i class="fa fa-money"></i>
                     <span>Egresos</span>
+                </p:link>
+                
+                <p:link outcome="/comprobante/index">
+                    <i class= "fa fa-bell"></i>
+                    <span>Comprobante</span>
+                </p:link>
+                <p:link outcome="/perfilusuario/index">
+                    <i class="fa fa-id-card"></i>
+                    <span>Perfil de Usuarios</span>
+                </p:link>
+                <p:link outcome="/inventario/index">
+                    <i class="fa fa-calculator"></i>
+                    <span>Inventario</span>
                 </p:link>
             </c:if>
         </li>
