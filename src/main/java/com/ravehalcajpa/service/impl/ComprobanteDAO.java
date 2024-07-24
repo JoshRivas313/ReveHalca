@@ -24,7 +24,11 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     @Override
     @Transactional
     public List<Comprobante> getAll() {
-        String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, c.apellidocliente,u.id as iduser, u.username, c.Metodo_pago, c.hora_comprobante, c.total_comprobante FROM comprobante c JOIN usuario u ON c.id_usuario = u.id JOIN pedido p ON c.id_pedido = p.id;";
+        String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, "
+                + "c.apellidocliente,u.id as iduser, u.username, c.Metodo_pago, "
+                + "c.hora_comprobante, c.total_comprobante FROM comprobante c "
+                + "JOIN usuario u ON c.id_usuario = u.id "
+                + "JOIN pedido p ON c.id_pedido = p.id;";
         List<Comprobante> lista = new ArrayList<>();
         try {
             conectar();
