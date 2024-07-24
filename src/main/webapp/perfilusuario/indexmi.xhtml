@@ -16,27 +16,30 @@
             <p:panel>
                 <div style="text-align: center;">
                     <p:graphicImage value="imagen" width="100" height="100" styleClass="circular-image"/>
-                    <h2>#{perfilBean.nombre}</h2>
+                    <h2>#{pusuarioBean.allId.nombre}</h2>
                 </div>
 
                 <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
                     <h:outputText value="Nombre:"/>
-                    <h:outputText value="#AAAAAA"/>
+                    <h:outputText value="#{pusuarioBean.allId.nombre}"/>
 
-                    <h:outputText value="Correo electrónico:"/>
-                    <h:outputText value="#BBBBBBB"/>
+                    
+                    <h:outputText value="Apellido :"/>
+                    <h:outputText value="#{pusuarioBean.allId.apellido}"/>
+                    
+                    <h:outputText value="DNI :"/>
+                    <h:outputText value="#{pusuarioBean.allId.dni}"/>
 
-                    <h:outputText value="Creado:"/>
-                    <h:outputText value="#CCCCCCCC"/>
+                    <h:outputText value="Nacionalidad  :"/>
+                    <h:outputText value="#{pusuarioBean.allId.nacionalidad}"/>
 
-                    <h:outputText value="Estado:"/>
-                    <h:outputText value="#DDDDDDDDDD"/>
+                    <h:outputText value="Distrito :"/>
+                    <h:outputText value="#{pusuarioBean.allId.distrito}"/>
 
-                    <h:outputText value="Último acceso:"/>
-                    <h:outputText value="#FFFFFFFFFF"/>
+                    <h:outputText value="Direccion :"/>
+                    <h:outputText value="#{pusuarioBean.allId.direccion}"/>
 
-                    <h:outputText value="Género:"/>
-                    <h:outputText value="#GGGGGGGGGG"/>
+
                 </p:panelGrid>
 
                 
@@ -51,4 +54,3 @@
     </ui:define>
 
 </ui:composition>
-

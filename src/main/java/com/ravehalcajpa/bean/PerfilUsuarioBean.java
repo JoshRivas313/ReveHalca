@@ -1,5 +1,6 @@
 package com.ravehalcajpa.bean;
 
+import com.ravehalcajpa.infra.security.LogonMB;
 import com.ravehalcajpa.model.PerfilUsuario;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.impl.PerfilUsuarioDAO;
@@ -33,6 +34,9 @@ public class PerfilUsuarioBean implements Serializable {
     private PerfilUsuarioDAO dao;
     private PerfilUsuario perfilusuario = new PerfilUsuario();
     private List<PerfilUsuario> usu;
+
+    @Inject
+    private LogonMB logon;
 
     public PerfilUsuarioBean() {
         perfilusuario = new PerfilUsuario();
@@ -76,6 +80,13 @@ public class PerfilUsuarioBean implements Serializable {
         }
 
         return usu;
+    }
+
+    public PerfilUsuario getAllId() throws Exception {
+        perfilusuario = dao.getByIdUsuario(logon.getUsuario().getId());
+
+        return perfilusuario;
+
     }
 
     public String update() {
@@ -126,8 +137,6 @@ public class PerfilUsuarioBean implements Serializable {
             // Mostrar mensaje de éxito
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Reporte generado correctamente en el servidor.");
             facesContext.addMessage(null, message);
-            
-            
 
         } catch (Exception e) {
             System.out.println("Error al generar el reporte: " + e.getMessage());
