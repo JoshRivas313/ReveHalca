@@ -60,24 +60,16 @@
                         <p:column headerText="N° de Mesa" >
                             #{ped.mesa.id}
                         </p:column>
-                        
+
                         <p:column headerText="Detalles" >
-                            <h:dataTable value="#{ped.detalles}" var="detalle">
-                                <p:column>
-                                    <f:facet name="header">Producto</f:facet>
-                                    #{detalle.nombreProducto}
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">Precio</f:facet>
-                                    #{detalle.precioProducto}
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">Cantidad</f:facet>
-                                    #{detalle.cantidad}
-                                </p:column>
-                            </h:dataTable>
+                            <p:commandButton value="Ver Detalles" 
+                                             onclick="PF('detallesDialog').show();" 
+                                             update=":detallesForm:detallesTable" 
+                                             styleClass="ui-button-secondary">
+                                <f:setPropertyActionListener value="#{ped}" target="#{pedidoBean.pedido}" />
+                            </p:commandButton>
                         </p:column>
-                        
+
 
                         <p:column headerText="Operación">
                             <h:form>
@@ -99,7 +91,21 @@
         </h:form>
 
 
-
+        <p:dialog header="Detalles del Pedido" widgetVar="detallesDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="600">
+            <h:form id="detallesForm">
+                <p:dataTable id="detallesTable" var="detalle" value="#{pedidoBean.pedido.detalles}">
+                    <p:column headerText="Producto">
+                        #{detalle.producto.nombre}
+                    </p:column>
+                    <p:column headerText="Precio">
+                        #{detalle.producto.precio}
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        #{detalle.cantidad}
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
 
     </ui:define>
 

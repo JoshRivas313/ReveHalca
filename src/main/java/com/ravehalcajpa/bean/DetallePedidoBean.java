@@ -1,6 +1,7 @@
 package com.ravehalcajpa.bean;
 
 import com.ravehalcajpa.model.DetallePedido;
+import com.ravehalcajpa.model.Pedido;
 import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.service.impl.ProductoDAO;
 import jakarta.annotation.ManagedBean;
@@ -107,15 +108,22 @@ public class DetallePedidoBean implements Serializable {
         printAllDetalles();
     }
 
-    private void printAllDetalles() {
-        System.out.println("Lista actual de detalles del pedido:");
+    public void actualizaPedido(Pedido pedido) {
         for (DetallePedido detalle : detallesPedido) {
-            System.out.println("- " + detalle.getProducto().getNombre() + " (Cantidad: " + detalle.getCantidad() + ")");
+            detalle.setPedido(pedido);
         }
     }
     
     public void clearDetalles() {
         detallesPedido.clear();
         System.out.println("Todos los detalles han sido eliminados.");
+    }
+    
+    //método de prueba para ver los cambios del detalle en add
+    private void printAllDetalles() {
+        System.out.println("Lista actual de detalles del pedido:");
+        for (DetallePedido detalle : detallesPedido) {
+            System.out.println("- " + detalle.getProducto().getNombre() + " (Cantidad: " + detalle.getCantidad() + ")");
+        }
     }
 }

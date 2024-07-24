@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.ravehalcajpa.service.impl;
 
 import com.ravehalcajpa.connection.conexion;
@@ -58,7 +55,20 @@ public class InventarioDAO extends conexion {
         }
     }
     
-    
+    @Transactional
+    public void updateCantDisp(long idProducto, int cantidad) throws SQLException, Exception {
+        String sql = "UPDATE inventario SET cantidad_disponible = cantidad_disponible - ? WHERE id_Producto = ?";
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+
+            st.setInt(1, cantidad);
+            st.setLong(2, idProducto);
+            st.executeUpdate();
+        } finally {
+            cerrar();
+        }
+    }
 
         
         

@@ -185,9 +185,15 @@ public class PedidoBean implements Serializable {
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 
-    public String update() {
+     public String update() {
+        detallePedidoBean.actualizaPedido(pedido);
         pedido.setDetalles(detallePedidoBean.getDetallesPedido());
         dao.update(pedido);
+        tipope = null;
+        try {
+            getAll();
+        } catch (Exception e) {
+        }
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 

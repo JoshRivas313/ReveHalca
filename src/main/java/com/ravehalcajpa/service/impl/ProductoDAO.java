@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.ravehalcajpa.service.impl;
 
 import com.ravehalcajpa.connection.conexion;
@@ -10,6 +7,7 @@ import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.service.DAO;
 import com.ravehalcajpa.service.EstadoProducto;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,4 +132,33 @@ public class ProductoDAO extends conexion implements DAO<Producto> {
         return false;
     }
 
+    @Transactional
+    public List<Producto> getAllProdPed() {
+        String sql = "SELECT id, nombre, precio FROM Producto";
+        List<Producto> lista = new ArrayList<>();
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Producto u = new Producto();
+                u.setId(rs.getLong("id"));
+                u.setNombre(rs.getString("nombre"));
+                u.setPrecio(rs.getDouble("precio"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return lista;
+    }
 }

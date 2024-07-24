@@ -19,18 +19,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PedidoDAO extends conexion implements DAO<Pedido> {
+private final DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
+//    private final InventarioDAO inventarioDAO = new InventarioDAO();
 
     @Override
     @Transactional
     public Pedido create(Pedido p) {
         String sqlPedido = "INSERT INTO Pedido (estado, hora, fecha, id_usuario, id_mesa) VALUES (?, ?, ?, ?, ?)";
-        String sqlDetalle = "INSERT INTO Detalle_Pedido (id_pedido, id_producto, cantidad) VALUES (?, ?, ?)";
         try {
             conectar();
             Connection conn = this.getCn();
             try (PreparedStatement stPedido = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
 
-                System.out.println("llego al método crear pedidoo");
                 stPedido.setString(1, p.getEstado().name());
                 if (p.getHora() != null) {
                     stPedido.setTime(2, java.sql.Time.valueOf(p.getHora()));
@@ -41,26 +41,20 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
                 stPedido.setLong(4, p.getUsuario().getId());
                 stPedido.setLong(5, p.getMesa().getId());
                 stPedido.executeUpdate();
-                System.out.println("Añadí pedido");
+
                 try (ResultSet rs = stPedido.getGeneratedKeys()) {
                     if (rs.next()) {
                         long generatedId = rs.getLong(1);
                         p.setId(generatedId);
-                        System.out.println("clave unica");
                     } else {
-                        throw new SQLException("No se pudo obtener la ID generada para el pedido.");
+                        throw new SQLException("No se pudo obtener la id generada para el pedido.");
                     }
                 }
 
                 if (p.getDetalles() != null) {
                     for (DetallePedido detalle : p.getDetalles()) {
-                        try (PreparedStatement stDetalle = conn.prepareStatement(sqlDetalle)) {
-                            stDetalle.setLong(1, p.getId());
-                            stDetalle.setLong(2, detalle.getProducto().getId());
-                            stDetalle.setInt(3, detalle.getCantidad());
-                            stDetalle.executeUpdate();
-                            System.out.println("añadir detalles del pedido");
-                        }
+                        detalle.setPedido(p);
+                        detallePedidoDAO.create(detalle);
                     }
                 }
 
@@ -114,8 +108,6 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
                 mesa.setId(rs.getLong("id_mesa"));
                 pedido.setMesa(mesa);
 
-                // Cargar detalles del pedido
-                DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
                 List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(id);
                 pedido.setDetalles(detalles);
 
@@ -185,14 +177,30 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
     @Override
     @Transactional
     public Pedido update(Pedido p) {
-        // Actualizar la información del pedido
         String sqlPedido = "UPDATE Pedido SET estado = ?, hora = ?, fecha = ?, id_usuario = ?, id_mesa = ? WHERE id = ?";
         String sqlDeleteDetalles = "DELETE FROM Detalle_Pedido WHERE id_pedido = ?";
-        String sqlDetalle = "INSERT INTO Detalle_Pedido (id_pedido, id_producto, cantidad) VALUES (?, ?, ?)";
 
         try {
-            conectar();
+            try {
+                conectar();
+            } catch (Exception ex) {
+                Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Connection conn = this.getCn();
+
+            Pedido currentPedido = getById(p.getId());
+            System.out.println("Detalles actuales del pedido:");
+            printPedido(currentPedido);
+
+            // me falta agregar método que añada al inventario si se remueve o descuenta producto del pedido :,) 
+//            for (DetallePedido detalle : currentPedido.getDetalles()) {
+//                try {
+//                    inventarioDAO.updateCantDisp(detalle.getProducto().getId(), detalle.getCantidad());
+//                } catch (Exception ex) {
+//                    Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+            
             try (PreparedStatement stPedido = conn.prepareStatement(sqlPedido)) {
                 stPedido.setString(1, p.getEstado().name());
 
@@ -215,21 +223,20 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
             }
 
             if (p.getDetalles() != null) {
-                try (PreparedStatement stDetalle = conn.prepareStatement(sqlDetalle)) {
-                    for (DetallePedido detalle : p.getDetalles()) {
-                        stDetalle.setLong(1, p.getId());
-                        stDetalle.setLong(2, detalle.getProducto().getId());
-                        stDetalle.setInt(3, detalle.getCantidad());
-                        stDetalle.addBatch();
-                    }
-                    stDetalle.executeBatch();
+                for (DetallePedido detalle : p.getDetalles()) {
+                    detalle.setPedido(p);
+                    detallePedidoDAO.create(detalle);
                 }
             }
 
+            Pedido updatedPedido = getById(p.getId());
+            System.out.println("Nuevos detalles del pedido:");
+            printPedido(updatedPedido);
+
             return p;
 
-        } catch (Exception ex) {
-            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, "Error al actualizar el pedido", ex);
         } finally {
             try {
                 cerrar();
@@ -237,6 +244,7 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
                 Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
         return null;
     }
 
@@ -265,6 +273,22 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
         return false;
     }
 
+    //para ver si se cargaba el detalle actualizado
+    private void printPedido(Pedido pedido) {
+        System.out.println("Pedido ID: " + pedido.getId());
+        System.out.println("Estado: " + pedido.getEstado());
+        System.out.println("Hora: " + pedido.getHora());
+        System.out.println("Fecha: " + pedido.getFecha());
+        System.out.println("Usuario: " + pedido.getUsuario().getUsername());
+        System.out.println("Mesa: " + pedido.getMesa().getId());
+        System.out.println("Detalles:");
+        for (DetallePedido detalle : pedido.getDetalles()) {
+            System.out.println(" - Producto ID: " + detalle.getProducto().getId());
+            System.out.println("   Cantidad: " + detalle.getCantidad());
+        }
+    }
+    
+    
     //OBTENER EL PEDIDO SEGUN LA MESA :(
     //sare cambié el tipo de dato de hora, ya que no me dejaba guardar
     //cree un convertidor, está en el paquete converter
