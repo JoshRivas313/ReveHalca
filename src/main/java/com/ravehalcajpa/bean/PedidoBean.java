@@ -200,6 +200,9 @@ public class PedidoBean implements Serializable {
     public String delete() throws Exception {
         long id = this.pedido.getId();
         dao.delete(id);
+        tipope = null;  
+        getAll();
+
         return "/pedido/index.xhtml?faces-redirect=true";
     }
 
