@@ -1,11 +1,16 @@
 package com.ravehalcajpa.service.impl;
 
+import com.ravehalcajpa.connection.conexion;
 import com.ravehalcajpa.model.Cliente;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import com.ravehalcajpa.service.DAOedit;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClienteDAO extends BaseDAO implements DAOedit<Cliente> {
 
@@ -17,6 +22,34 @@ public class ClienteDAO extends BaseDAO implements DAOedit<Cliente> {
         } finally {
             closeEntityManager();
         }
+    }
+    
+    public Cliente getByNombre(String nombre){
+        String sql = "SELECT * FROM clientes WHERE nombreCliente = ?";
+        conexion cn = new conexion();
+        try {
+            cn.conectar();
+            PreparedStatement st = cn.getCn().prepareStatement(sql);
+            st.setString(1, nombre);
+            
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getLong("id"));
+                cliente.setNombreCliente(rs.getString("nombreCliente"));
+                cliente.setApellidoCliente(rs.getString("apellidoCliente"));
+                return cliente;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                cn.cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
     @Override

@@ -5,7 +5,7 @@
                 template="#{layoutMB.template}">
 
     <ui:define name="title">
-        Editar  Producto
+        Editar  Comprobante
     </ui:define>
 
 
@@ -15,12 +15,12 @@
 
             <p:panel styleClass="box-primary card">
                 <div id="main-buttons" class="hidden-sm hidden-xs">
-                    <p:commandButton value="Actualizar" action="#{productoBean.update}"  update="@form"  
+                    <p:commandButton value="Actualizar" action="#{comprobanteBean.update}"  update="@form"  
                                      icon="fa fa-check" styleClass="btn-primary" />
 
                     <p:spacer width="5"/>
                     <p:commandButton value="Volver" immediate="true"
-                                     action="/producto/index?faces-redirect=true"
+                                     action="/comprobante/index?faces-redirect=true"
                                      process="@this"
                                      icon="fa fa-reply"/>
                 </div>
@@ -30,59 +30,61 @@
 
                 <div class="ui-g ui-fluid">
 
-                    <p:inputText id="txtid" value="#{productoBean.producto.id}"  style="display: none"/>
+                    <p:inputText id="txtid" value="#{comprobanteBean.comprobante.id}"  style="display: none"/>
+                    <p:inputText id="txtuser" value="#{comprobanteBean.comprobante.iduser.username}"  style="display: none"/>
+                    <p:inputText id="txtMetP" value="#{comprobanteBean.comprobante.hora}"  style="display: none"/>
 
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
                         <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Nombre" for="inptNomP"/>
+                            <p:outputLabel value="Numero de mesa" for="inptNumM"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11" >
-                            <p:inputText id="inptNomP" value="#{productoBean.producto.nombre}" required="true"/>
-                            <span class="help-block"> 
-                                <p:message for="inptNomP" /> 
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Id Categoria Producto" for="inptCatP"/>
-                        </div>
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:selectOneMenu id="inptCatP" value="#{productoBean.producto.idcat.id}" required="true">
-                                <f:selectItem itemLabel="Seleccione una categoría" itemValue="" />
-                                <f:selectItems value="#{productoBean.categorias}" var="categoria"
-                                               itemLabel="#{categoria.productCategory}" itemValue="#{categoria.id}"/>
+                            <p:selectOneMenu id="inptNumM" value="#{comprobanteBean.selectedMesaId}" required="true">
+                                <f:selectItems value="#{comprobanteBean.mesas}" var="mesa"
+                                               itemLabel="#{mesa.id}" itemValue="#{mesa.id}"/>
+                                
                             </p:selectOneMenu>
                             <span class="help-block"> 
-                                <p:message for="inptCatP" /> 
+                                <p:message for="inptNumM" /> 
                             </span>
                         </div>
                     </div>
                     
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
                         <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Estado" for="inptEstP"/>
-                        </div>
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:selectOneMenu id="inptEstP" value="#{productoBean.producto.estado}" required="true">
-                                <f:selectItems value="#{productoBean.estados}" var="estad"
-                                               itemLabel="#{estad}" itemValue="#{estad}"/>
-                            </p:selectOneMenu>
-                            <span class="help-block"> 
-                                <p:message for="inptEstP" /> 
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Precio" for="inptpreP"/>
+                            <p:outputLabel value="Nombre Cliente" for="inptnomC"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11" >
-                            <p:inputText id="inptpreP" value="#{productoBean.producto.precio}" required="true"/>
+                            <p:inputText id="inptnomC" value="#{comprobanteBean.comprobante.nombrecliente}" required="true"/>
                             <span class="help-block"> 
-                                <p:message for="inptpreP" /> 
+                                <p:message for="inptnomC" /> 
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Apellido Cliente" for="inptapeC"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptapeC" value="#{comprobanteBean.comprobante.apellidocliente}" required="true"/>
+                            <span class="help-block"> 
+                                <p:message for="inptapeC" /> 
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Metodo de Pago" for="inptmetP"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:selectOneMenu id="inptmetP" value="#{comprobanteBean.comprobante.pago}" required="true">
+                                <f:selectItems value="#{comprobanteBean.metodoPago}" var="metpag"
+                                               itemLabel="#{metpag}" itemValue="#{metpag}"/>
+                            </p:selectOneMenu>
+                            <span class="help-block"> 
+                                <p:message for="inptmetP" /> 
                             </span>
                         </div>
                     </div>

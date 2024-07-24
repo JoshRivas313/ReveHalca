@@ -292,6 +292,10 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
                     p.setHora(rs.getTime("hora").toLocalTime());
                 }
                 p.setFecha(rs.getDate("fecha"));
+                
+                DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
+                List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(p.getId());
+                p.setDetalles(detalles);
 
                 return p;
             }

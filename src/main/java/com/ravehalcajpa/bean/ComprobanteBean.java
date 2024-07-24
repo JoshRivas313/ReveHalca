@@ -15,8 +15,6 @@ import com.ravehalcajpa.service.impl.UsuarioDAO;
 import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
@@ -29,168 +27,180 @@ import java.util.stream.Collectors;
 @Named("comprobanteBean")
 
 public class ComprobanteBean implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Inject
     private ComprobanteDAO dao;
-    private Comprobante comprobante = new Comprobante();
-
     private List<Comprobante> Comprobantecat;
-    private List<Usuario> mozos;
-
+    private Comprobante comprobante = new Comprobante();
+    
     @Inject
     private UsuarioDAO userDAO;
-
-    private Long selectedMesaId;
-    private Long selectedPedidoId;
-    private String pedidoInfo;
-    private List<DetallePedido> detallesPedido;
+    private List<Usuario> mozos;
+    private int selectedUserId;
     private double total;
     
     @Inject
-     private ClienteDAO clientedao;  
-
-    private List<Mesa> mesas;
-
+    private ClienteDAO clientedao;
+    private Cliente clien;
+    
     @Inject
     private MesaDAO mesaDAO;
-
+    private List<Mesa> mesas;
+    private Long selectedMesaId;
+    
     @Inject
     private PedidoDAO pedidoDAO;
-
-    private int selectedUserId;
-
-    public int getSelectedUserId() {
-        return selectedUserId;
-    }
-
-    public void setSelectedUserId(int selectedUserId) {
-        this.selectedUserId = selectedUserId;
-    }
-
+    private Long selectedPedidoId;
+    private List<DetallePedido> detallesPedido;
+    
     @PostConstruct
     public void init() {
         mesas = mesaDAO.getAll();
     }
-
-    public List<Mesa> getMesas() {
-        return mesas;
-    }
-
-    public UsuarioDAO getUserDAO() {
-        return userDAO;
-    }
-
-    public void setUserDAO(UsuarioDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    public Long getSelectedMesaId() {
-        return selectedMesaId;
-    }
-
-    public void setSelectedMesaId(Long selectedMesaId) {
-        this.selectedMesaId = selectedMesaId;
-    }
-
-    public String getPedidoInfo() {
-        return pedidoInfo;
-    }
-
-    public void setPedidoInfo(String pedidoInfo) {
-        this.pedidoInfo = pedidoInfo;
-    }
-
-    public List<DetallePedido> getDetallesPedido() {
-        return detallesPedido;
-    }
-
-    public void setDetallesPedido(List<DetallePedido> detallesPedido) {
-        this.detallesPedido = detallesPedido;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public PedidoDAO getPedidoDAO() {
-        return pedidoDAO;
-    }
-
-    public void setPedidoDAO(PedidoDAO pedidoDAO) {
-        this.pedidoDAO = pedidoDAO;
-    }
-
-    public ComprobanteBean() {
-        comprobante = new Comprobante();
-    }
-
+    
     public ComprobanteDAO getDao() {
         return dao;
     }
-
+    
     public void setDao(ComprobanteDAO dao) {
         this.dao = dao;
     }
-
+    
     public Comprobante getComprobante() {
         return comprobante;
     }
-
-    public void setComprobante(Comprobante Comprobante) {
-        this.comprobante = Comprobante;
+    
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
     }
-
+    
+    public UsuarioDAO getUserDAO() {
+        return userDAO;
+    }
+    
+    public void setUserDAO(UsuarioDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+    
+    public int getSelectedUserId() {
+        return selectedUserId;
+    }
+    
+    public void setSelectedUserId(int selectedUserId) {
+        this.selectedUserId = selectedUserId;
+    }
+    
+    public double getTotal() {
+        return total;
+    }
+    
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
+    public ClienteDAO getClientedao() {
+        return clientedao;
+    }
+    
+    public void setClientedao(ClienteDAO clientedao) {
+        this.clientedao = clientedao;
+    }
+    
+    public MesaDAO getMesaDAO() {
+        return mesaDAO;
+    }
+    
+    public void setMesaDAO(MesaDAO mesaDAO) {
+        this.mesaDAO = mesaDAO;
+    }
+    
+    public List<Mesa> getMesas() {
+        return mesas;
+    }
+    
+    public void setMesas(List<Mesa> mesas) {
+        this.mesas = mesas;
+    }
+    
+    public Long getSelectedMesaId() {
+        return selectedMesaId;
+    }
+    
+    public void setSelectedMesaId(Long selectedMesaId) {
+        this.selectedMesaId = selectedMesaId;
+    }
+    
+    public PedidoDAO getPedidoDAO() {
+        return pedidoDAO;
+    }
+    
+    public void setPedidoDAO(PedidoDAO pedidoDAO) {
+        this.pedidoDAO = pedidoDAO;
+    }
+    
+    public Long getSelectedPedidoId() {
+        return selectedPedidoId;
+    }
+    
+    public void setSelectedPedidoId(Long selectedPedidoId) {
+        this.selectedPedidoId = selectedPedidoId;
+    }
+    
+    public List<DetallePedido> getDetallesPedido() {
+        return detallesPedido;
+    }
+    
+    public void setDetallesPedido(List<DetallePedido> detallesPedido) {
+        this.detallesPedido = detallesPedido;
+    }
+    
     public List<Comprobante> getComprobantecat() {
         if (Comprobantecat == null) {
             Comprobantecat = dao.getAll();
         }
         return Comprobantecat;
     }
-
-    public void setComprobantecat(List<Comprobante> Comprobantecat) {
-        this.Comprobantecat = Comprobantecat;
-    }
-
+    
     public String newComprobante() {
         this.comprobante = new Comprobante();
         return "add";
     }
-
+    
     public String editComprobante() throws Exception {
         Long id = this.comprobante.getId();
         this.comprobante = dao.getById(id);
-
+        this.clien = clientedao.getByNombre(this.comprobante.getNombrecliente());
+        
         return "edit";
     }
-
+    
     public List<Comprobante> getAll() throws Exception {
-
+        
         if (Comprobantecat == null) {
             Comprobantecat = dao.getAll();
         }
-
+        
         return Comprobantecat;
     }
     
-    
-
     public String create() throws Exception {
         
-        Cliente cli = new Cliente(comprobante.getNombrecliente(),comprobante.getApellidocliente());
-
-        selectedUserId = this.comprobante.getIduser().getId();
-
+        Mesa mesa = mesaDAO.getById(selectedMesaId);
+        
+        Pedido pedido = pedidoDAO.getPedidoByMesaId(mesa.getId());
+        
+        this.selectedPedidoId = pedido.getId();
+        
+        this.detallesPedido = pedido.getDetalles();
+        this.total = calcularTotal(detallesPedido);
+        
+        Cliente cli = new Cliente(comprobante.getNombrecliente(), comprobante.getApellidocliente());
         
         Usuario selectedUser = userDAO.getById(selectedUserId);
-
         
         this.comprobante.setIduser(selectedUser);
-
+        
         this.comprobante.setIdped(pedidoDAO.getById(selectedPedidoId));
         this.comprobante.setHora(new Time(System.currentTimeMillis()));
         this.comprobante.setTotal(this.total);
@@ -198,12 +208,31 @@ public class ComprobanteBean implements Serializable {
         clientedao.create(cli);
         return "/comprobante/index.xhtml?faces-redirect=true";
     }
-
+    
     public String update() throws Exception {
+        Mesa mesa = mesaDAO.getById(selectedMesaId);
+        
+        Pedido pedido = pedidoDAO.getPedidoByMesaId(mesa.getId());
+        
+        this.selectedPedidoId = pedido.getId();
+        
+        this.detallesPedido = pedido.getDetalles();
+        this.total = calcularTotal(detallesPedido);
+        
+        this.clien.setNombreCliente(comprobante.getNombrecliente());
+        this.clien.setApellidoCliente(comprobante.getApellidocliente());
+        
+        Usuario selectedUser = userDAO.getById(selectedUserId);
+        
+        this.comprobante.setIduser(selectedUser);
+        
+        this.comprobante.setIdped(pedidoDAO.getById(selectedPedidoId));
+        this.comprobante.setTotal(this.total);
         dao.update(comprobante);
+        clientedao.update(clien);
         return "/comprobante/index.xhtml?faces-redirect=true";
     }
-
+    
     public String delete() throws Exception {
         long id = this.comprobante.getId();
         dao.delete(id);
@@ -214,34 +243,20 @@ public class ComprobanteBean implements Serializable {
     public List<Usuario> getMozos() {
         if (mozos == null) {
             mozos = userDAO.getAll().stream()
-                    .filter(u -> u.getTipoUsuario().getNombre().equals("Mozo"))
+                    .filter(u -> u.getTipoUsuario().getNombre().equals("Cajero"))
                     .collect(Collectors.toList());
         }
         return mozos;
     }
-
+    
     public List<MetodoPago> getMetodoPago() {
         return Arrays.asList(MetodoPago.values());
     }
-
-    public void obtenerPedido() {
-        Mesa mesa = mesaDAO.getById(selectedMesaId);
-        if (mesa != null) {
-            Pedido pedido = pedidoDAO.getPedidoByMesaId(mesa.getId());
-            if (pedido != null) {
-                selectedPedidoId = pedido.getId();
-                this.detallesPedido=pedido.getDetalles();
-                this.total=calcularTotal(detallesPedido);
-            } else {
-                selectedPedidoId = null; // No se encontró pedido
-            }
-        }
-    }
-
+    
     private double calcularTotal(List<DetallePedido> detalles) {
         return detalles.stream()
                 .mapToDouble(d -> d.getPrecioProducto() * d.getCantidad())
                 .sum();
     }
-
+    
 }

@@ -38,7 +38,7 @@
                             <p:selectOneMenu id="inptidMe" value="#{comprobanteBean.selectedMesaId}" required="true">
                                 <f:selectItems value="#{comprobanteBean.mesas}" var="mesa"
                                                itemLabel="#{mesa.id}" itemValue="#{mesa.id}"/>
-                                <p:ajax listener="#{comprobanteBean.obtenerPedido}" update="form"/>
+                                
                             </p:selectOneMenu>
                             <span class="help-block">
                                 <p:message for="inptidMe"/>
@@ -74,7 +74,7 @@
 
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
                         <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Nombre de Mozo" for="inptCaje"/>
+                            <p:outputLabel value="Nombre de Cajero" for="inptCaje"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11" >
                             <p:selectOneMenu id="inptCaje" value="#{comprobanteBean.selectedUserId}" required="true">

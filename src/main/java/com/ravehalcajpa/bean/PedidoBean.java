@@ -16,11 +16,14 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ManagedBean
 @SessionScoped
@@ -45,6 +48,9 @@ public class PedidoBean implements Serializable {
 
     @Inject
     private DetallePedidoBean detallePedidoBean;
+
+    private List<Usuario> mozos;
+    private int selectedUserId;
 
     @PostConstruct
     public void init() {
@@ -131,6 +137,14 @@ public class PedidoBean implements Serializable {
         this.tipodao = tipodao;
     }
 
+    public int getSelectedUserId() {
+        return selectedUserId;
+    }
+
+    public void setSelectedUserId(int selectedUserId) {
+        this.selectedUserId = selectedUserId;
+    }
+
     public String newPedido() {
         this.pedido = new Pedido();
         this.pedido.setUsuario(new Usuario());
@@ -161,6 +175,10 @@ public class PedidoBean implements Serializable {
     }
 
     public String create() throws Exception {
+        Usuario selectedUser = tipodao.getById(selectedUserId);
+        pedido.setUsuario(selectedUser);
+        pedido.setHora(LocalTime.now());
+        pedido.setFecha(new Date());
         pedido.setDetalles(detallePedidoBean.getDetallesPedido());
         dao.create(pedido);
         tipope = null;
@@ -198,6 +216,16 @@ public class PedidoBean implements Serializable {
             tmesa = mesadao.getAll();
         }
         return tmesa;
+    }
+
+    //FILTRAR TIPO USUARIO SOLO MOZOS
+    public List<Usuario> getMozos() {
+        if (mozos == null) {
+            mozos = tipodao.getAll().stream()
+                    .filter(u -> u.getTipoUsuario().getNombre().equals("Mozo"))
+                    .collect(Collectors.toList());
+        }
+        return mozos;
     }
 
     public void addDetalle(Producto producto) {

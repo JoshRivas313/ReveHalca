@@ -67,15 +67,7 @@ public class ProductoBean implements Serializable {
     public String editProducto() throws Exception {
         Long id = this.producto.getId();
         this.producto = dao.getById(id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
-        System.out.println("sssssss" + id);
+        
 
         return "edit";
     }

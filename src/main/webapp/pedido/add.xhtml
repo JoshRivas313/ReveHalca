@@ -45,42 +45,16 @@
                         </div>
                     </div>
 
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Hora" for="inptHoraPed"/>
-                        </div>
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:calendar id="inptHoraPed" value="#{pedidoBean.pedido.hora}" required="true"
-                                        timeOnly="true" pattern="HH:mm" showOn="button" navigator="true" 
-                                        showButtonPanel="true" converter="timeConverter"/>
-                            <span class="help-block">
-                                <p:message for="inptHoraPed" />
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:outputLabel value="Fecha" for="inptFechaPed"/>
-                        </div>
-                        <div class="ui-sm-12 ui-g-11">
-                            <p:calendar id="inptFechaPed" value="#{pedidoBean.pedido.fecha}" required="true"
-                                        pattern="dd/MM/yyyy" navigator="true" showButtonPanel="true"/>
-                            <span class="help-block">
-                                <p:message for="inptFechaPed" />
-                            </span>
-                        </div>
-                    </div>
+                    
 
                     <div class="ui-sm-12 ui-g-6 ui-g-nopad">     
                         <div class="ui-sm-12 ui-g-11">
                             <p:outputLabel value="Nombre del Mozo" for="inptUsuarioPed"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11">
-                            <p:selectOneMenu id="inptUsuarioPed" value="#{pedidoBean.pedido.usuario.id}" required="true">
-                                <f:selectItem itemLabel="Seleccione un usuario" itemValue="" />
-                                <f:selectItems value="#{usuarioBean.tipousu}" var="user"
-                                               itemLabel="#{user.username}" itemValue="#{user.id}" />
+                            <p:selectOneMenu id="inptUsuarioPed" value="#{pedidoBean.selectedUserId}" required="true">
+                                <f:selectItems value="#{pedidoBean.mozos}" var="mozo"
+                                               itemLabel="#{mozo.username}" itemValue="#{mozo.id}"/>
                             </p:selectOneMenu>
 
                             <span class="help-block">
