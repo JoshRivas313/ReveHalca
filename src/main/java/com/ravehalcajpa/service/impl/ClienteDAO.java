@@ -24,13 +24,14 @@ public class ClienteDAO extends BaseDAO implements DAOedit<Cliente> {
         }
     }
     
-    public Cliente getByNombre(String nombre){
-        String sql = "SELECT * FROM clientes WHERE nombreCliente = ?";
+    public Cliente getByNombre(String nombre, String apellido){
+        String sql = "SELECT * FROM cliente WHERE nombreCliente = ? and apellidoCliente = ?";
         conexion cn = new conexion();
         try {
             cn.conectar();
             PreparedStatement st = cn.getCn().prepareStatement(sql);
             st.setString(1, nombre);
+            st.setString(2, apellido);
             
             ResultSet rs = st.executeQuery();
             if (rs.next()) {

@@ -6,11 +6,15 @@ package com.ravehalcajpa.service.impl;
 
 import com.ravehalcajpa.connection.conexion;
 import com.ravehalcajpa.model.Comprobante;
+import com.ravehalcajpa.model.DetallePedido;
+import com.ravehalcajpa.model.Mesa;
 import com.ravehalcajpa.model.Pedido;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.DAO;
+import com.ravehalcajpa.service.EstadoPedido;
 import com.ravehalcajpa.service.MetodoPago;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,7 @@ import java.util.logging.Logger;
 public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
 
     @Override
+    @Transactional
     public List<Comprobante> getAll() {
         String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, c.apellidocliente,u.id as iduser, u.username, c.Metodo_pago, c.hora_comprobante, c.total_comprobante FROM comprobante c JOIN usuario u ON c.id_usuario = u.id JOIN pedido p ON c.id_pedido = p.id;";
         List<Comprobante> lista = new ArrayList<>();
@@ -60,17 +65,74 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     }
 
     @Override
+    @Transactional
     public Comprobante getById(Long id) {
-        BaseDAO bd = new BaseDAO();
-        EntityManager em = bd.getEntityManager();
+        String sql = "SELECT c.*, u.username, p.id_mesa  FROM comprobante c "
+                + "JOIN usuario u ON c.id_usuario = u.id "
+                + "JOIN pedido p ON c.id_pedido = p.id "
+                + "JOIN mesa m ON p.id_mesa = m.id "
+                + "WHERE c.id= ?";
         try {
-            return em.find(Comprobante.class, id);
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+
+            st.setLong(1, id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+            System.out.println(id);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Comprobante c = new Comprobante();
+                c.setId(rs.getLong("id"));
+                Pedido p = new Pedido();
+                p.setId(rs.getLong("id_pedido"));
+                c.setNombrecliente(rs.getNString("nombrecliente"));
+                c.setApellidocliente(rs.getNString("apellidocliente"));
+                Usuario usu ;
+                UsuarioDAO usudao = new UsuarioDAO();
+        
+                usu = usudao.getById(rs.getInt("id_usuario"));
+                c.setIduser(usu);
+
+                c.setPago(MetodoPago.valueOf(rs.getNString("Metodo_pago")));
+                c.setHora(rs.getTime("hora_comprobante"));
+                c.setTotal(rs.getDouble("total_comprobante"));
+                
+                Mesa me = new Mesa();
+                me.setId(rs.getLong("id_mesa"));
+                p.setMesa(me);
+
+                // Cargar detalles del pedido
+                DetallePedidoDAO detallePedidoDAO = new DetallePedidoDAO();
+                List<DetallePedido> detalles = detallePedidoDAO.getDetallesByPedidoId(p.getId());
+                p.setDetalles(detalles);
+
+                System.out.println("usuario recuperado: " + usu);
+                System.out.println("Pedido recuperado: " + p);
+                System.out.println("Detalles del pedido: " + detalles);
+                c.setIdped(p);
+                return c;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            em.close();
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        return null;
     }
 
     @Override
+    @Transactional
     public Comprobante create(Comprobante entity) {
         String sql = "INSERT INTO comprobante (id_pedido, nombrecliente, apellidocliente, id_usuario,Metodo_pago, hora_comprobante, total_comprobante) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -98,16 +160,17 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
     }
 
     @Override
+    @Transactional
     public Comprobante update(Comprobante entity) {
-        
+
         return entity;
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
-        
+
         return false;
     }
-    
 
 }

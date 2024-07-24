@@ -92,12 +92,12 @@
 
                         <p:column headerText="Operación">
                             <h:form>
-                                <p:commandButton icon="pi pi-pencil" action="#{productoBean.editProducto}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                    <f:setPropertyActionListener value="#{prod.id}"  target="#{productoBean.producto.id}" />
+                                <p:commandButton icon="pi pi-pencil" action="#{comprobanteBean.editComprobante}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                    <f:setPropertyActionListener value="#{com.id}"  target="#{comprobanteBean.comprobante.id}" />
                                 </p:commandButton>
 
-                                <p:commandButton action="#{productoBean.delete}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
-                                    <f:setPropertyActionListener value="#{prod.id}" target="#{productoBean.producto.id}" />
+                                <p:commandButton action="#{comprobanteBean.delete}" class="ui-button-warning rounded-button" icon="pi pi-trash"  ajax="false" process="@this" onclick="return confirm('¿Confirma que desea dar de baja este elemento?')">
+                                    <f:setPropertyActionListener value="#{com.id}" target="#{comprobanteBean.comprobante.id}" />
                                 </p:commandButton>
                             </h:form>
 
