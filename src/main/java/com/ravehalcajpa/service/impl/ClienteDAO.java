@@ -49,7 +49,16 @@ public class ClienteDAO extends BaseDAO implements DAOedit<Cliente> {
         
     }
     
-    
+    @Transactional
+    public Cliente create(Cliente entity) {
+        EntityManager em = getEntityManager();
+        try {
+            em.persist(entity);
+            return entity;
+        } finally {
+            em.close();
+        }
+    }
     
     
     

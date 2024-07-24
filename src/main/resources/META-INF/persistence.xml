@@ -16,6 +16,7 @@
         <class>com.ravehalcajpa.model.Inventario</class>
         <class>com.ravehalcajpa.model.Pedido</class>
         <class>com.ravehalcajpa.model.DetallePedido</class>
+        <class>com.ravehalcajpa.model.Comprobante</class>
 
 
 

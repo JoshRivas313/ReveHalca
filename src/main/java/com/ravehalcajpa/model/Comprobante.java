@@ -19,11 +19,13 @@ public class Comprobante {
     private String nombrecliente;
     private String apellidocliente;
 
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario iduser;
 
     @Enumerated(EnumType.STRING)
     private MetodoPago pago;
+
     private Time hora;
     private double total;
 
@@ -110,7 +112,4 @@ public class Comprobante {
         return "Comprobante{" + "id=" + id + ", idped=" + idped + ", nombrecliente=" + nombrecliente + ", apellidocliente=" + apellidocliente + ", iduser=" + iduser + ", pago=" + pago + ", hora=" + hora + ", total=" + total + '}';
     }
 
-    
-    
-    
 }

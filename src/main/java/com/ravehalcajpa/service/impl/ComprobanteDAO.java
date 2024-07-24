@@ -21,7 +21,7 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
 
     @Override
     public List<Comprobante> getAll() {
-        String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, c.apellidocliente,u.username, c.Metodo_pago, c.hora_comprobante, c.total_comprobante FROM comprobante c JOIN usuario u ON c.id_usuario = u.id JOIN pedido p ON c.id_pedido = p.id;";
+        String sql = "SELECT c.id, p.id as idpedido, c.nombrecliente, c.apellidocliente,u.id as iduser, u.username, c.Metodo_pago, c.hora_comprobante, c.total_comprobante FROM comprobante c JOIN usuario u ON c.id_usuario = u.id JOIN pedido p ON c.id_pedido = p.id;";
         List<Comprobante> lista = new ArrayList<>();
         try {
             conectar();
@@ -99,42 +99,13 @@ public class ComprobanteDAO extends conexion implements DAO<Comprobante> {
 
     @Override
     public Comprobante update(Comprobante entity) {
-        String sql = "UPDATE producto SET id_Categoria_Producto = ?, nombre = ?, estado = ?, precio = ? WHERE id = ?";
-        try {
-            conectar();
-            PreparedStatement st = this.getCn().prepareStatement(sql);
-
-            st.executeUpdate();
-        } catch (Exception ex) {
-            Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                cerrar();
-            } catch (Exception ex) {
-                Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
         return entity;
     }
 
     @Override
     public boolean delete(long id) {
-        String sql = "UPDATE producto SET estado = 'Culminado' WHERE id = ?";
-        try {
-            conectar();
-            PreparedStatement st = this.getCn().prepareStatement(sql);
-            st.setLong(1, id);
-            int rowsUpdated = st.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (Exception ex) {
-            Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                cerrar();
-            } catch (Exception ex) {
-                Logger.getLogger(ComprobanteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
         return false;
     }
     

@@ -4,6 +4,7 @@ import com.ravehalcajpa.connection.conexion;
 import com.ravehalcajpa.model.DetallePedido;
 import com.ravehalcajpa.model.Mesa;
 import com.ravehalcajpa.model.Pedido;
+import com.ravehalcajpa.model.Producto;
 import com.ravehalcajpa.model.Usuario;
 import com.ravehalcajpa.service.DAO;
 import com.ravehalcajpa.service.EstadoPedido;
@@ -197,5 +198,45 @@ public class PedidoDAO extends conexion implements DAO<Pedido> {
         }
         return false;
     }
+
+    //OBTENER EL PEDIDO SEGUN LA MESA :(
+    public Pedido getPedidoByMesaId(Long mesaId) {
+        String sql = "SELECT p.id, p.id_usuario, p.id_mesa, p.estado, p.hora, p.fecha FROM pedido p  WHERE p.id_mesa = ? ORDER BY p.fecha DESC, p.hora DESC LIMIT 1";
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql); 
+            st.setLong(1, mesaId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Pedido p = new Pedido();
+                p.setId(rs.getLong("id"));
+                
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("id_usuario"));
+                p.setUsuario(u);
+                
+                Mesa mesa = new Mesa();
+                mesa.setId(rs.getLong("id_mesa"));
+                p.setMesa(mesa);
+                
+                p.setEstado(EstadoPedido.valueOf(rs.getString("estado")));
+                p.setHora(rs.getTime("hora"));
+                p.setFecha(rs.getDate("fecha"));
+            
+                return p;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+
+    
 
 }
