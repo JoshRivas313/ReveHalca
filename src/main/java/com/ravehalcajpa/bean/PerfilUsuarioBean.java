@@ -69,8 +69,22 @@ public class PerfilUsuarioBean implements Serializable {
 
     public String editPerfilUsuario() throws Exception {
         long id = this.perfilusuario.getId();
+
         this.perfilusuario = dao.getById(id);
-        return "edit";
+
+        String opcion;
+
+        if (this.perfilusuario != null) {
+            System.out.println("No se necesita crear ");
+            opcion = "edit";
+
+        } else {
+
+            System.out.println("Se debe crear");
+            opcion = "create";
+        }
+
+        return opcion;
     }
 
     public List<PerfilUsuario> getAll() throws Exception {
@@ -89,10 +103,35 @@ public class PerfilUsuarioBean implements Serializable {
 
     }
 
+    public String editarUsuarioUnitario() throws Exception {
+
+        perfilusuario = dao.getByIdUsuario(logon.getUsuario().getId());
+
+        return "editUnit";
+
+    }
+
     public String update() {
         dao.update(perfilusuario);
         return "/perfilusuario/index.xhtml?faces-redirect=true";
     }
+    
+     public String updateUnit() {
+        dao.update(perfilusuario);
+         System.out.println("Perfil Usuario");
+        return "/perfilusuario/indexmi.xhtml?faces-redirect=true";
+    }
+     
+
+    public String crear() {
+
+        dao.create(perfilusuario, 24);
+        return "/perfilusuario/index.xhtml?faces-redirect=true";
+    }
+
+    
+
+    
 
     public String exportarReporteUsuario() {
         FacesContext facesContext = FacesContext.getCurrentInstance();

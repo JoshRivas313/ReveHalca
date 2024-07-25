@@ -39,13 +39,15 @@
                     <h:outputText value="Direccion :"/>
                     <h:outputText value="#{pusuarioBean.allId.direccion}"/>
 
+                    
 
                 </p:panelGrid>
 
                 
+                
 
                 <div style="text-align: right; margin-top: 20px;">
-                    <p:commandButton value="Editar Perfil" styleClass="ui-button-secondary"/>
+                    <p:commandButton value="Editar Perfil" styleClass="ui-button-secondary" action="#{pusuarioBean.editarUsuarioUnitario()}"/>
                 </div>
             </p:panel>
         </h:form>

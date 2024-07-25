@@ -63,7 +63,38 @@ public class PerfilUsuarioDAO extends conexion implements DAOedit<PerfilUsuario>
         }
         return null;  // Retorna null si no se encuentra el perfil o hay un error
     }
-    
+
+    @Transactional
+    public PerfilUsuario create(PerfilUsuario entity, int usuarioId) {
+        String sql = "INSERT INTO PerfilUsuario (nombre, apellido, dni, nacionalidad, distrito, direccion, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            conectar();
+            PreparedStatement st = this.getCn().prepareStatement(sql);
+            st.setString(1, entity.getNombre());
+            st.setString(2, entity.getApellido());
+            st.setInt(3, entity.getDni());
+            st.setString(4, entity.getNacionalidad());
+            st.setString(5, entity.getDistrito());
+            st.setString(6, entity.getDireccion());
+            st.setInt(7, usuarioId); // Utilizando el id del Usuario pasado como parámetro
+
+            st.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PerfilUsuarioDAO.class.getName()).log(Level.SEVERE, "Error al insertar el perfil de usuario", ex);
+        } catch (Exception ex) {
+            Logger.getLogger(PerfilUsuarioDAO.class.getName()).log(Level.SEVERE, "Error general", ex);
+        } finally {
+            try {
+                cerrar();
+            } catch (Exception ex) {
+                Logger.getLogger(PerfilUsuarioDAO.class.getName()).log(Level.SEVERE, "Error al cerrar la conexión", ex);
+            }
+        }
+        return entity;
+    }
+
     @Override
     @Transactional
     public List<PerfilUsuario> getAll() {
